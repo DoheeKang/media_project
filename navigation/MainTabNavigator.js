@@ -10,7 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import ContentScreen from '../screens/ContentScreen';
 import InfoScreen from '../screens/InfoScreen';
-import LoginScreen from '../components/Login';
+import AuthScreen from '../components/AuthScreen';
 
 const config = Platform.select({
 	web: { headerMode: 'screen' },
