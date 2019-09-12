@@ -10,6 +10,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import ContentScreen from '../screens/ContentScreen';
 import InfoScreen from '../screens/InfoScreen';
+import LoginScreen from '../components/Login';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -38,6 +39,27 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
+
+const LoginStack = createStackNavigator(
+	{
+		Login: LoginScreen
+	},
+	config
+);
+
+LoginStack.navigationOptions = {
+	tabBarLabel: 'Login',
+	tabBarIcon: ({ focused }) => (
+		<TabBarIcon
+			focused={focused}
+			name={
+				Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-Login'
+			}
+		/>
+	)
+};
+
+LoginStack.path = '';
 
 const MapStack = createStackNavigator(
   {
@@ -104,7 +126,8 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   MapStack,
   ContentStack,
-  InfoStack
+	InfoStack,
+	LoginStack
 });
 
 tabNavigator.path = '';
