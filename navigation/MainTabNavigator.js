@@ -13,42 +13,42 @@ import InfoScreen from '../screens/InfoScreen';
 import LoginScreen from '../components/Login';
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {}
+	web: { headerMode: 'screen' },
+	default: {}
 });
 
 const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen
-  },
-  config
-);
-
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-home'
-      }
-    />
-  )
-};
-
-HomeStack.path = '';
-
-const LoginStack = createStackNavigator(
 	{
-		Login: LoginScreen
+		Home: HomeScreen
 	},
 	config
 );
 
-LoginStack.navigationOptions = {
-	tabBarLabel: 'Login',
+HomeStack.navigationOptions = {
+	tabBarLabel: 'Home',
+	tabBarIcon: ({ focused }) => (
+		<TabBarIcon
+			focused={focused}
+			name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-home'
+			}
+		/>
+	)
+};
+
+HomeStack.path = '';
+
+const AuthStack = createStackNavigator(
+	{
+		Auth: AuthScreen
+	},
+	config
+);
+
+AuthStack.navigationOptions = {
+	tabBarLabel: 'Sign',
 	tabBarIcon: ({ focused }) => (
 		<TabBarIcon
 			focused={focused}
@@ -59,75 +59,75 @@ LoginStack.navigationOptions = {
 	)
 };
 
-LoginStack.path = '';
+AuthStack.path = '';
 
 const MapStack = createStackNavigator(
-  {
-    Map: MapScreen
-  },
-  config
+	{
+		Map: MapScreen
+	},
+	config
 );
 
 MapStack.navigationOptions = {
-  tabBarLabel: 'Map',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
+	tabBarLabel: 'Map',
+	tabBarIcon: ({ focused }) => (
+		<TabBarIcon
+			focused={focused}
       name={
         Platform.OS === 'ios'
           ? `ios-information-circle${focused ? '' : '-outline'}`
           : 'md-map'
       }
-    />
-  )
+		/>
+	)
 };
 
 MapStack.path = '';
 
 const ContentStack = createStackNavigator(
-  {
-    Content: ContentScreen
-  },
-  config
+	{
+		Content: ContentScreen
+	},
+	config
 );
 
 ContentStack.navigationOptions = {
-  tabBarLabel: 'Contents',
-  tabBarIcon: ({ focused }) => (
+	tabBarLabel: 'Contents',
+	tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-locate'}
     />
-  )
+	)
 };
 
 ContentStack.path = '';
 
 const InfoStack = createStackNavigator(
-  {
-    Info: InfoScreen
-  },
-  config
+	{
+		Info: InfoScreen
+	},
+	config
 );
 
 InfoStack.navigationOptions = {
-  tabBarLabel: 'Info',
-  tabBarIcon: ({ focused }) => (
+	tabBarLabel: 'Info',
+	tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-link' : 'md-person'}
     />
-  )
+	)
 };
 
 InfoStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  MapStack,
-  ContentStack,
+	HomeStack,
+	MapStack,
+	ContentStack,
 	InfoStack,
-	LoginStack
+	AuthStack
 });
 
 tabNavigator.path = '';
