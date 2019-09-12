@@ -19,6 +19,8 @@ const LoginScreen = () => {
 			.signOut()
 			.then(() => {
 				setData(null);
+				setEmail('');
+				setPassword('');
 			})
 			.catch(error => {
 				console.log(error);
