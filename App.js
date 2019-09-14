@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import AppNavigator from './navigation/AppNavigator';
 import AuthData from './firebase';
+import User from './firebase/User';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -23,8 +23,8 @@ export default function App(props) {
     return (
 			<AuthData>
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
+					{Platform.OS === 'ios' && <StatusBar barStyle='default' />}
+					<User />
       </View>
 			</AuthData>
     );
