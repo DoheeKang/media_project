@@ -10,7 +10,6 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import ContentScreen from '../screens/ContentScreen';
 import InfoScreen from '../screens/InfoScreen';
-import AuthScreen from '../components/AuthScreen';
 
 const config = Platform.select({
 	web: { headerMode: 'screen' },
@@ -39,27 +38,6 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
-
-const AuthStack = createStackNavigator(
-	{
-		Auth: AuthScreen
-	},
-	config
-);
-
-AuthStack.navigationOptions = {
-	tabBarLabel: 'Sign',
-	tabBarIcon: ({ focused }) => (
-		<TabBarIcon
-			focused={focused}
-			name={
-				Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-Login'
-			}
-		/>
-	)
-};
-
-AuthStack.path = '';
 
 const MapStack = createStackNavigator(
 	{
@@ -126,8 +104,7 @@ const tabNavigator = createBottomTabNavigator({
 	HomeStack,
 	MapStack,
 	ContentStack,
-	InfoStack,
-	AuthStack
+	InfoStack
 });
 
 tabNavigator.path = '';
