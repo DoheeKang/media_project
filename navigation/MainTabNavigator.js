@@ -9,7 +9,6 @@ import HomeScreen from '../screens/HomeScreen';
 import MapScreen from '../screens/MapScreen';
 import ContentScreen from '../screens/ContentScreen';
 import InfoScreen from '../screens/InfoScreen';
-import AuthScreen from '../components/AuthScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
@@ -21,17 +20,6 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
-
-const AuthStack = createStackNavigator({
-  Auth: AuthScreen
-});
-
-AuthStack.navigationOptions = {
-  tabBarLabel: 'Sign',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />
-};
-
-AuthStack.path = '';
 
 const MapStack = createStackNavigator({
   Map: MapScreen
@@ -70,8 +58,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   MapStack,
   ContentStack,
-  InfoStack,
-  AuthStack
+  InfoStack
 });
 
 tabNavigator.path = '';
