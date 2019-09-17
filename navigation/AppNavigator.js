@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   createAppContainer,
   createStackNavigator,
@@ -7,18 +7,32 @@ import {
 import { ActivityIndicator, View } from 'react-native';
 import MainTabNavigator from './MainTabNavigator';
 import AuthScreen from '../components/AuthScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 import { ContextSet } from '../firebase';
 
 const AuthLoadingScreen = props => {
   const [data, setData] = useContext(ContextSet.DataContext);
+  const [isLoad, setIsLoad] = useState(false);
 
-  props.navigation.navigate(data ? 'Main' : 'Auth');
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoad(true);
+    }, 3000);
+  }, []);
 
-  return (
-    <View>
-      <ActivityIndicator />
-    </View>
-  );
+  useEffect(() => {
+    if (isLoad) props.navigation.navigate(data ? 'Main' : 'Auth');
+  }, [isLoad]);
+
+  if (isLoad) {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    );
+  } else {
+    return <LoadingScreen />;
+  }
 };
 
 const AuthStack = createStackNavigator({ SignIn: AuthScreen });
