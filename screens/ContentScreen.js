@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 import { firebaseApp } from '../firebase';
 import Content from './Content';
-export default function ContentScreen() {
+import ContetnDetailScreen from './ContentDetailScreen';
+export default function ContentScreen(props) {
   const [auth, users, contents] = firebaseApp();
   const [list, setList] = useState(undefined);
+  const [isDetail, setIsDetail] = useState(false);
   const dataList = [];
 
   useEffect(() => {
@@ -18,20 +20,30 @@ export default function ContentScreen() {
       .then(() => {
         setList(
           dataList.map(info => (
-            <Content key={info.id} data={info.data}></Content>
+            <TouchableHighlight
+              onPress={() => setIsDetail(true)}
+              underlayColor="white"
+              key={info.id}
+            >
+              <Content key={info.id} data={info.data}></Content>
+            </TouchableHighlight>
           ))
         );
       });
   }, []);
 
-  if (list) {
-    return <View style={styles.container}>{list}</View>;
+  if (!isDetail) {
+    if (list) {
+      return <View style={styles.container}>{list}</View>;
+    } else {
+      return (
+        <View style={styles.container}>
+          <Text>Contents Screen</Text>
+        </View>
+      );
+    }
   } else {
-    return (
-      <View style={styles.container}>
-        <Text>Contents Screen</Text>
-      </View>
-    );
+    return <ContetnDetailScreen name={'test'} setIsDetail={setIsDetail} />;
   }
 }
 
