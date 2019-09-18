@@ -69,6 +69,12 @@ const fineDustCases = {
   }
 };
 
+const weatherAPI =
+  'http://api.openweathermap.org/data/2.5/weather?q=Seoul&APPID=9285169024c6d787301b9060e3bb2ed3';
+
+const fineDustAPI =
+  'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?sidoName=서울&pageNo=1&numOfRows=10&ServiceKey=tSa88T5QB46%2Bx3bYTLNANgFJ7yXjFRCXtNnvFbVzEQYGwu33Grfr%2Fteoy7%2FJ%2BpN3KQtla8iSX0Tjr9AIcUGf9A%3D%3D&ver=1.3&_returnType=json';
+
 export default function HomeScreen() {
   const [weather, setWeather] = useState({
     main: { temp: 100 },
@@ -76,24 +82,27 @@ export default function HomeScreen() {
   });
   const [dust, setDust] = useState({ pm10Grade: 1, pm25Grade: 1 });
   const [isLoad, setIsLoad] = useState(false);
+
   useEffect(() => {
-    // weather api
-    axios
-      .get(
-        'http://api.openweathermap.org/data/2.5/weather?q=Seoul&APPID=9285169024c6d787301b9060e3bb2ed3'
-      )
-      .then(res => {
+    const getInfo = async () => {
+      try {
+        // weather api
+        const res = await axios.get(weatherAPI);
         setWeather(res.data);
-      });
-    // dust api
-    axios
-      .get(
-        'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty?sidoName=서울&pageNo=1&numOfRows=10&ServiceKey=tSa88T5QB46%2Bx3bYTLNANgFJ7yXjFRCXtNnvFbVzEQYGwu33Grfr%2Fteoy7%2FJ%2BpN3KQtla8iSX0Tjr9AIcUGf9A%3D%3D&ver=1.3&_returnType=json'
-      )
-      .then(res => {
+      } catch (e) {
+        alert('날씨 정보 오류');
+      }
+
+      try {
+        // dust api
+        const res = await axios.get(fineDustAPI);
         setDust(res.data.list[0]);
-        setIsLoad(true);
-      });
+      } catch (e) {
+        alert('미세먼지 정보 오류');
+      }
+      setIsLoad(true);
+    };
+    getInfo();
   }, []);
 
   if (isLoad) {
