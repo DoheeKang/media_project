@@ -1,11 +1,53 @@
-import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { StyleSheet, View, TextInput, Text, Button } from 'react-native';
+import { firebaseApp, ContextSet } from '../firebase';
+import firebase from 'firebase/app';
 
 export default function ContentDetailScreen(props) {
+  const [auth, users, contents] = firebaseApp();
+  const [comment, setComment] = useState(undefined);
+  const [data, setData] = useContext(ContextSet.DataContext);
+  const [reLoad, setReload] = useState(false);
+  const [commentList, setCommentList] = useState(undefined);
+
+  const handleOnComment = () => {
+    console.log('handle 실행?');
+    console.log(data);
+    const com = { id: JSON.stringify(data.userName), comment };
+    contents.doc('2').update({
+      comments: firebase.firestore.FieldValue.arrayUnion(com)
+    });
+    setComment('');
+    setReload(!reLoad);
+  };
+
+  useEffect(() => {
+    contents
+      .doc('2')
+      .get()
+      .then(function(doc) {
+        const dataList = doc.data().comments;
+        setCommentList(
+          dataList.map(info => (
+            <Text>
+              {info.id} : {info.comment}
+            </Text>
+          ))
+        );
+      });
+  }, [reLoad]);
+
   return (
     <View style={styles.container}>
       <Text>{props.name}</Text>
       <Button title="X" onPress={() => props.setIsDetail(false)} />
+      <TextInput
+        onChangeText={e => setComment(e)}
+        value={comment}
+        placeholder="댓글을 입력하세요"
+      ></TextInput>
+      <Button title="입력" onPress={handleOnComment}></Button>
+      {commentList}
     </View>
   );
 }
