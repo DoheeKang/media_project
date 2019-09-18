@@ -75,6 +75,7 @@ export default function HomeScreen() {
     weather: [{ main: 'Mist' }]
   });
   const [dust, setDust] = useState({ pm10Grade: 1, pm25Grade: 1 });
+  const [isLoad, setIsLoad] = useState(false);
   useEffect(() => {
     // weather api
     axios
@@ -91,22 +92,31 @@ export default function HomeScreen() {
       )
       .then(res => {
         setDust(res.data.list[0]);
+        setIsLoad(true);
       });
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <MaterialCommunityIcons
-        color="black"
-        size={144}
-        name={weatherCases[weather.weather[0].main].icon}
-      ></MaterialCommunityIcons>
-      <Text>기온: {Math.ceil(weather.main.temp - 273.15)}℃</Text>
-      <Text>습도: {weather.main.humidity} %</Text>
-      <Text>미세먼지: {fineDustCases[dust.pm10Grade].condition}</Text>
-      <Text>초미세먼지: {fineDustCases[dust.pm25Grade].condition}</Text>
-    </View>
-  );
+  if (isLoad) {
+    return (
+      <View style={styles.container}>
+        <MaterialCommunityIcons
+          color="black"
+          size={144}
+          name={weatherCases[weather.weather[0].main].icon}
+        ></MaterialCommunityIcons>
+        <Text>기온: {Math.ceil(weather.main.temp - 273.15)}℃</Text>
+        <Text>습도: {weather.main.humidity} %</Text>
+        <Text>미세먼지: {fineDustCases[dust.pm10Grade].condition}</Text>
+        <Text>초미세먼지: {fineDustCases[dust.pm25Grade].condition}</Text>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text>Weather Loading...</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
