@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+  ScrollView
+} from 'react-native';
 import { firebaseApp } from '../firebase';
 import Content from './Content';
 import ContetnDetailScreen from './ContentDetailScreen';
@@ -34,13 +40,13 @@ export default function ContentScreen(props) {
 
   if (!isDetail) {
     if (list) {
-      return <View style={styles.container}>{list}</View>;
-    } else {
       return (
-        <View style={styles.container}>
-          <Text>Contents Screen</Text>
-        </View>
+        <ScrollView>
+          <View style={styles.container}>{list}</View>
+        </ScrollView>
       );
+    } else {
+      return <View style={styles.container}></View>;
     }
   } else {
     return <ContetnDetailScreen name={'test'} setIsDetail={setIsDetail} />;
