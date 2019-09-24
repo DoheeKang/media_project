@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ export default function ContentScreen(props) {
   const [auth, users, contents] = firebaseApp();
   const [list, setList] = useState(undefined);
   const [isDetail, setIsDetail] = useState(false);
+  const detailInfo = useRef('');
   const dataList = [];
 
   useEffect(() => {
@@ -27,7 +28,10 @@ export default function ContentScreen(props) {
         setList(
           dataList.map(info => (
             <TouchableHighlight
-              onPress={() => setIsDetail(true)}
+              onPress={() => {
+                detailInfo.current = info.id;
+                setIsDetail(true);
+              }}
               underlayColor="white"
               key={info.id}
             >
@@ -49,7 +53,12 @@ export default function ContentScreen(props) {
       return <View style={styles.container}></View>;
     }
   } else {
-    return <ContetnDetailScreen name={'test'} setIsDetail={setIsDetail} />;
+    return (
+      <ContetnDetailScreen
+        detailInfo={detailInfo.current}
+        setIsDetail={setIsDetail}
+      />
+    );
   }
 }
 

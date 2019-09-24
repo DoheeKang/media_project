@@ -12,7 +12,7 @@ export default function ContentDetailScreen(props) {
 
   const handleOnComment = () => {
     const com = { id: JSON.stringify(data.userName), comment };
-    contents.doc('2').update({
+    contents.doc(props.detailInfo).update({
       comments: firebase.firestore.FieldValue.arrayUnion(com)
     });
     setComment('');
@@ -21,7 +21,7 @@ export default function ContentDetailScreen(props) {
 
   useEffect(() => {
     contents
-      .doc('2')
+      .doc(props.detailInfo)
       .get()
       .then(function(doc) {
         const dataList = doc.data().comments;
@@ -37,7 +37,7 @@ export default function ContentDetailScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text>{props.name}</Text>
+      <Text>{props.detailInfo}</Text>
       <Button title="X" onPress={() => props.setIsDetail(false)} />
       <TextInput
         onChangeText={e => setComment(e)}
