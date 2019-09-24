@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
-import { Button, Header } from 'react-native-elements';
+import { Button, Header, Icon } from 'react-native-elements';
 import { firebaseApp } from '../firebase';
 
 const FOCUS_GREEN = '#7dcaac';
@@ -58,7 +58,14 @@ const SignupScreen = ({ setSignupPage, setData }) => {
       keyboardVerticalOffset={20}
     >
       <Header
-        // leftComponent={{ icon: 'menu', color: '#fff' }}
+        leftComponent={
+          <Icon
+            name="arrow-back"
+            color="#fff"
+            onPress={() => setSignupPage(false)}
+            underlayColor={FOCUS_GREEN}
+          />
+        }
         centerComponent={{ text: '회원가입', style: { color: '#fff' } }}
         ViewComponent={LinearGradient}
         linearGradientProps={{
@@ -136,12 +143,6 @@ const SignupScreen = ({ setSignupPage, setData }) => {
               onPress={handleOnClickSignup}
             />
           </View>
-          {/* 
-        <Button
-          style={{ elevation: 0 }}
-          title="Cancel"
-          onPress={() => setSignupPage(false)}
-        /> */}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -152,12 +153,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  header: {
-    height: 100,
-    backgroundColor: 'red'
-  },
   inputBox: {
     flex: 1,
+    paddingTop: 30,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -175,9 +173,7 @@ const styles = StyleSheet.create({
     width: 300,
     paddingTop: 30,
     elevation: 0
-  },
-  button: {
-    elevation: 0
   }
 });
+
 export default SignupScreen;
