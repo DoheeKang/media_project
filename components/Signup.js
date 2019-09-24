@@ -1,9 +1,27 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Button,
+  Alert,
+  KeyboardAvoidingView
+} from 'react-native';
 import { firebaseApp } from '../firebase';
+
+const FOCUS_GREEN = '#7dcaac';
+const BLURE_GREEN = '#acc9be';
+const LIGHT_GRAY = '#D3D3D3';
 
 const SignupScreen = ({ setSignupPage, setData }) => {
   const [auth, users] = firebaseApp();
+  const [isFocusedName, setIsFocusedName] = useState(false);
+  const [isFocusedID, setIsFocusedID] = useState(false);
+  const [isFocusedPW, setIsFocusedPW] = useState(false);
+  const [isFocusedConfirmPW, setIsFocusedConfirmPW] = useState(false);
+
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,69 +50,91 @@ const SignupScreen = ({ setSignupPage, setData }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        value={userName}
-        style={styles.inputBox}
-        placeholder="Username"
-        autoCapitalize="none"
-        placeholderTextColor="#999"
-        onChangeText={e => setUserName(e)}
-      />
-      <Text></Text>
-
-      <TextInput
-        value={email}
-        style={styles.inputBox}
-        placeholder="Email"
-        autoCapitalize="none"
-        placeholderTextColor="#999"
-        onChangeText={e => setEmail(e)}
-      />
-      <Text></Text>
-
-      <TextInput
-        value={password}
-        style={styles.inputBox}
-        placeholder="Password"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        placeholderTextColor="#999"
-        onChangeText={e => setPassword(e)}
-      />
-      {password && confirmPassword && password !== confirmPassword ? (
-        <Text style={styles.error}>password are not matching</Text>
-      ) : (
+    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <View style={styles.header}></View>
+      <View style={styles.input}>
+        <TextInput
+          placeholder="이름"
+          selectionColor={FOCUS_GREEN}
+          underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLURE_GREEN}
+          onFocus={() => setIsFocusedName(true)}
+          onBlur={() => setIsFocusedName(false)}
+          style={styles.textInput}
+          value={userName}
+          autoCapitalize="none"
+          placeholderTextColor={LIGHT_GRAY}
+          onChangeText={e => setUserName(e)}
+        />
         <Text></Text>
-      )}
-      <TextInput
-        value={confirmPassword}
-        style={styles.inputBox}
-        placeholder="Confirm Password"
-        secureTextEntry={true}
-        autoCapitalize="none"
-        placeholderTextColor="#999"
-        onChangeText={e => setConfirmPassword(e)}
-      />
-      <Button title="ok" onPress={handleOnClickSignup} />
-      <Button title="Cancel" onPress={() => setSignupPage(false)} />
-    </View>
+        <TextInput
+          placeholder="아이디"
+          selectionColor={FOCUS_GREEN}
+          underlineColorAndroid={isFocusedID ? FOCUS_GREEN : BLURE_GREEN}
+          onFocus={() => setIsFocusedID(true)}
+          onBlur={() => setIsFocusedID(false)}
+          style={styles.textInput}
+          value={email}
+          autoCapitalize="none"
+          placeholderTextColor={LIGHT_GRAY}
+          onChangeText={e => setEmail(e)}
+        />
+        <Text></Text>
+        <TextInput
+          placeholder="비밀번호"
+          selectionColor={FOCUS_GREEN}
+          underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLURE_GREEN}
+          onFocus={() => setIsFocusedPW(true)}
+          onBlur={() => setIsFocusedPW(false)}
+          style={styles.textInput}
+          value={password}
+          autoCapitalize="none"
+          secureTextEntry={true}
+          placeholderTextColor={LIGHT_GRAY}
+          onChangeText={e => setPassword(e)}
+        />
+        {password && confirmPassword && password !== confirmPassword ? (
+          <Text style={styles.error}>비밀번호가 일치하지 않습니다</Text>
+        ) : (
+          <Text></Text>
+        )}
+        <TextInput
+          placeholder="비밀번호 확인"
+          selectionColor={FOCUS_GREEN}
+          underlineColorAndroid={isFocusedConfirmPW ? FOCUS_GREEN : BLURE_GREEN}
+          onFocus={() => setIsFocusedConfirmPW(true)}
+          onBlur={() => setIsFocusedConfirmPW(false)}
+          style={styles.textInput}
+          value={confirmPassword}
+          autoCapitalize="none"
+          secureTextEntry={true}
+          placeholderTextColor={LIGHT_GRAY}
+          onChangeText={e => setConfirmPassword(e)}
+        />
+      </View>
+      {/* <Button title="ok" onPress={handleOnClickSignup} />
+      <Button title="Cancel" onPress={() => setSignupPage(false)} /> */}
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  header: {
+    height: 70,
+    backgroundColor: 'red'
+  },
+  input: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  inputBox: {
+  textInput: {
     width: 300,
     padding: 10,
-    backgroundColor: '#ccc',
-    borderRadius: 25,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: '#333',
     marginVertical: 10
   },
   error: {
