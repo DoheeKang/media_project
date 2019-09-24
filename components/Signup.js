@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Header } from 'react-native-elements';
 import { firebaseApp } from '../firebase';
 
 const FOCUS_GREEN = '#7dcaac';
@@ -57,7 +57,16 @@ const SignupScreen = ({ setSignupPage, setData }) => {
       enabled
       keyboardVerticalOffset={20}
     >
-      <View style={styles.header}></View>
+      <Header
+        // leftComponent={{ icon: 'menu', color: '#fff' }}
+        centerComponent={{ text: '회원가입', style: { color: '#fff' } }}
+        ViewComponent={LinearGradient}
+        linearGradientProps={{
+          colors: ['#62cdaa', '#79d19b', '#90d392'],
+          start: { x: 0, y: 0.5 },
+          end: { x: 1, y: 0.5 }
+        }}
+      />
       <ScrollView>
         <View style={styles.inputBox}>
           <TextInput
