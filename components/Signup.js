@@ -13,13 +13,13 @@ import { Button, Header, Icon } from 'react-native-elements';
 import { firebaseApp } from '../firebase';
 
 const FOCUS_GREEN = '#7dcaac';
-const BLURE_GREEN = '#acc9be';
+const BLUR_GREEN = '#acc9be';
 const LIGHT_GRAY = '#D3D3D3';
 
 const SignupScreen = ({ setSignupPage, setData }) => {
   const [auth, users] = firebaseApp();
   const [isFocusedName, setIsFocusedName] = useState(false);
-  const [isFocusedID, setIsFocusedID] = useState(false);
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
   const [isFocusedPW, setIsFocusedPW] = useState(false);
   const [isFocusedConfirmPW, setIsFocusedConfirmPW] = useState(false);
 
@@ -79,7 +79,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           <TextInput
             placeholder="이름"
             selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLURE_GREEN}
+            underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLUR_GREEN}
             onFocus={() => setIsFocusedName(true)}
             onBlur={() => setIsFocusedName(false)}
             style={styles.textInput}
@@ -90,11 +90,11 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           />
           <Text></Text>
           <TextInput
-            placeholder="아이디"
+            placeholder="이메일"
             selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedID ? FOCUS_GREEN : BLURE_GREEN}
-            onFocus={() => setIsFocusedID(true)}
-            onBlur={() => setIsFocusedID(false)}
+            underlineColorAndroid={isFocusedEmail ? FOCUS_GREEN : BLUR_GREEN}
+            onFocus={() => setIsFocusedEmail(true)}
+            onBlur={() => setIsFocusedEmail(false)}
             style={styles.textInput}
             value={email}
             autoCapitalize="none"
@@ -105,7 +105,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           <TextInput
             placeholder="비밀번호"
             selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLURE_GREEN}
+            underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLUR_GREEN}
             onFocus={() => setIsFocusedPW(true)}
             onBlur={() => setIsFocusedPW(false)}
             style={styles.textInput}
@@ -124,7 +124,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
             placeholder="비밀번호 확인"
             selectionColor={FOCUS_GREEN}
             underlineColorAndroid={
-              isFocusedConfirmPW ? FOCUS_GREEN : BLURE_GREEN
+              isFocusedConfirmPW ? FOCUS_GREEN : BLUR_GREEN
             }
             onFocus={() => setIsFocusedConfirmPW(true)}
             onBlur={() => setIsFocusedConfirmPW(false)}
