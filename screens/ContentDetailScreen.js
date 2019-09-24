@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, TextInput, Text, Button } from 'react-native';
 import { firebaseApp, ContextSet } from '../firebase';
 import firebase from 'firebase/app';
@@ -11,8 +11,6 @@ export default function ContentDetailScreen(props) {
   const [commentList, setCommentList] = useState(undefined);
 
   const handleOnComment = () => {
-    console.log('handle 실행?');
-    console.log(data);
     const com = { id: JSON.stringify(data.userName), comment };
     contents.doc('2').update({
       comments: firebase.firestore.FieldValue.arrayUnion(com)
