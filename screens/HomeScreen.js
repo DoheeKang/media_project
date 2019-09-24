@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import axios from 'axios';
 
 const weatherCases = {
@@ -108,15 +110,28 @@ export default function HomeScreen() {
   if (isLoad) {
     return (
       <View style={styles.container}>
-        <MaterialCommunityIcons
-          color="black"
-          size={144}
-          name={weatherCases[weather.weather[0].main].icon}
-        ></MaterialCommunityIcons>
-        <Text>기온: {Math.ceil(weather.main.temp - 273.15)}℃</Text>
-        <Text>습도: {weather.main.humidity} %</Text>
-        <Text>미세먼지: {fineDustCases[dust.pm10Grade].condition}</Text>
-        <Text>초미세먼지: {fineDustCases[dust.pm25Grade].condition}</Text>
+        <LinearGradient
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          colors={['#62cdaa', '#79d19b', '#90d392']}
+          style={styles.weather}
+        >
+          {/* <MaterialCommunityIcons
+            color="black"
+            size={144}
+            name={weatherCases[weather.weather[0].main].icon}
+          ></MaterialCommunityIcons> */}
+          <View>
+            <Text>오늘</Text>
+            <Text>서울 {Math.ceil(weather.main.temp - 273.15)}º</Text>
+            <Text>미세먼지 {fineDustCases[dust.pm10Grade].condition}</Text>
+            <Text>초미세먼지 {fineDustCases[dust.pm25Grade].condition}</Text>
+          </View>
+          <View>
+            <Text>우우우</Text>
+          </View>
+        </LinearGradient>
+        <View style={styles.contents}></View>
       </View>
     );
   } else {
@@ -130,9 +145,17 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
+  },
+  weather: {
+    flex: 4,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  contents: {
+    flex: 5,
+    backgroundColor: 'white'
   }
 });
 
