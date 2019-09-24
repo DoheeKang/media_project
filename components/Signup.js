@@ -5,10 +5,11 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import { firebaseApp } from '../firebase';
 
 const FOCUS_GREEN = '#7dcaac';
@@ -50,69 +51,90 @@ const SignupScreen = ({ setSignupPage, setData }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      enabled
+      keyboardVerticalOffset={20}
+    >
       <View style={styles.header}></View>
-      <View style={styles.input}>
-        <TextInput
-          placeholder="이름"
-          selectionColor={FOCUS_GREEN}
-          underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLURE_GREEN}
-          onFocus={() => setIsFocusedName(true)}
-          onBlur={() => setIsFocusedName(false)}
-          style={styles.textInput}
-          value={userName}
-          autoCapitalize="none"
-          placeholderTextColor={LIGHT_GRAY}
-          onChangeText={e => setUserName(e)}
-        />
-        <Text></Text>
-        <TextInput
-          placeholder="아이디"
-          selectionColor={FOCUS_GREEN}
-          underlineColorAndroid={isFocusedID ? FOCUS_GREEN : BLURE_GREEN}
-          onFocus={() => setIsFocusedID(true)}
-          onBlur={() => setIsFocusedID(false)}
-          style={styles.textInput}
-          value={email}
-          autoCapitalize="none"
-          placeholderTextColor={LIGHT_GRAY}
-          onChangeText={e => setEmail(e)}
-        />
-        <Text></Text>
-        <TextInput
-          placeholder="비밀번호"
-          selectionColor={FOCUS_GREEN}
-          underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLURE_GREEN}
-          onFocus={() => setIsFocusedPW(true)}
-          onBlur={() => setIsFocusedPW(false)}
-          style={styles.textInput}
-          value={password}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          placeholderTextColor={LIGHT_GRAY}
-          onChangeText={e => setPassword(e)}
-        />
-        {password && confirmPassword && password !== confirmPassword ? (
-          <Text style={styles.error}>비밀번호가 일치하지 않습니다</Text>
-        ) : (
+      <ScrollView>
+        <View style={styles.inputBox}>
+          <TextInput
+            placeholder="이름"
+            selectionColor={FOCUS_GREEN}
+            underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLURE_GREEN}
+            onFocus={() => setIsFocusedName(true)}
+            onBlur={() => setIsFocusedName(false)}
+            style={styles.textInput}
+            value={userName}
+            autoCapitalize="none"
+            placeholderTextColor={LIGHT_GRAY}
+            onChangeText={e => setUserName(e)}
+          />
           <Text></Text>
-        )}
-        <TextInput
-          placeholder="비밀번호 확인"
-          selectionColor={FOCUS_GREEN}
-          underlineColorAndroid={isFocusedConfirmPW ? FOCUS_GREEN : BLURE_GREEN}
-          onFocus={() => setIsFocusedConfirmPW(true)}
-          onBlur={() => setIsFocusedConfirmPW(false)}
-          style={styles.textInput}
-          value={confirmPassword}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          placeholderTextColor={LIGHT_GRAY}
-          onChangeText={e => setConfirmPassword(e)}
-        />
-      </View>
-      {/* <Button title="ok" onPress={handleOnClickSignup} />
-      <Button title="Cancel" onPress={() => setSignupPage(false)} /> */}
+          <TextInput
+            placeholder="아이디"
+            selectionColor={FOCUS_GREEN}
+            underlineColorAndroid={isFocusedID ? FOCUS_GREEN : BLURE_GREEN}
+            onFocus={() => setIsFocusedID(true)}
+            onBlur={() => setIsFocusedID(false)}
+            style={styles.textInput}
+            value={email}
+            autoCapitalize="none"
+            placeholderTextColor={LIGHT_GRAY}
+            onChangeText={e => setEmail(e)}
+          />
+          <Text></Text>
+          <TextInput
+            placeholder="비밀번호"
+            selectionColor={FOCUS_GREEN}
+            underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLURE_GREEN}
+            onFocus={() => setIsFocusedPW(true)}
+            onBlur={() => setIsFocusedPW(false)}
+            style={styles.textInput}
+            value={password}
+            autoCapitalize="none"
+            secureTextEntry={true}
+            placeholderTextColor={LIGHT_GRAY}
+            onChangeText={e => setPassword(e)}
+          />
+          {password && confirmPassword && password !== confirmPassword ? (
+            <Text style={styles.error}>비밀번호가 일치하지 않습니다</Text>
+          ) : (
+            <Text></Text>
+          )}
+          <TextInput
+            placeholder="비밀번호 확인"
+            selectionColor={FOCUS_GREEN}
+            underlineColorAndroid={
+              isFocusedConfirmPW ? FOCUS_GREEN : BLURE_GREEN
+            }
+            onFocus={() => setIsFocusedConfirmPW(true)}
+            onBlur={() => setIsFocusedConfirmPW(false)}
+            style={styles.textInput}
+            value={confirmPassword}
+            autoCapitalize="none"
+            secureTextEntry={true}
+            placeholderTextColor={LIGHT_GRAY}
+            onChangeText={e => setConfirmPassword(e)}
+          />
+
+          <View style={styles.buttonBox}>
+            <Button
+              buttonStyle={{ backgroundColor: FOCUS_GREEN }}
+              title="완료"
+              onPress={handleOnClickSignup}
+            />
+          </View>
+          {/* 
+        <Button
+          style={{ elevation: 0 }}
+          title="Cancel"
+          onPress={() => setSignupPage(false)}
+        /> */}
+        </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -122,10 +144,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   header: {
-    height: 70,
+    height: 100,
     backgroundColor: 'red'
   },
-  input: {
+  inputBox: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
@@ -139,6 +161,14 @@ const styles = StyleSheet.create({
   },
   error: {
     color: 'red'
+  },
+  buttonBox: {
+    width: 300,
+    paddingTop: 30,
+    elevation: 0
+  },
+  button: {
+    elevation: 0
   }
 });
 export default SignupScreen;
