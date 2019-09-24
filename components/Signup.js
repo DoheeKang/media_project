@@ -39,14 +39,14 @@ const SignupScreen = ({ setSignupPage, setData }) => {
             users.doc(authData.uid).set(data);
             setData(data);
             setSignupPage(false);
-            Alert.alert('가입을 축하합니다.');
+            Alert.alert('가입을 축하합니다!');
           })
           .catch(error => Alert.alert(error.message));
       } else {
-        Alert.alert('비밀번호를 확인해주세요!');
+        Alert.alert('비밀번호를 확인해주세요');
       }
     } else {
-      Alert.alert('정보를 입력해주세요!');
+      Alert.alert('정보를 입력해주세요');
     }
   };
 
