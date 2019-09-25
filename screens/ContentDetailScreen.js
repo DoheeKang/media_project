@@ -1,6 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, TextInput, Text, Button } from 'react-native';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  Button,
+  ScrollView,
+  Dimensions
+} from 'react-native';
+import Animated from 'react-native-reanimated';
+import { LinearGradient } from 'expo-linear-gradient';
 import { firebaseApp, ContextSet } from '../firebase';
+import { TabView, SceneMap } from 'react-native-tab-view';
 import firebase from 'firebase/app';
 
 export default function ContentDetailScreen(props) {
@@ -8,7 +20,79 @@ export default function ContentDetailScreen(props) {
   const [comment, setComment] = useState(undefined);
   const [data, setData] = useContext(ContextSet.DataContext);
   const [reLoad, setReload] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [routes, setRoutes] = useState([
+    { key: 'first', title: '장소정보' },
+    { key: 'second', title: '장소후기' }
+  ]);
   const [commentList, setCommentList] = useState(undefined);
+  const title = useRef('');
+
+  const FirstRoute = () => (
+    <View style={styles.scene}>
+      <Text>장소 정보</Text>
+    </View>
+  );
+
+  const SecondRoute = () => (
+    <View style={styles.commentBox}>
+      <TextInput
+        onChangeText={e => setComment(e)}
+        value={comment}
+        placeholder="댓글을 입력하세요"
+      ></TextInput>
+      <Button title="입력" onPress={handleOnComment}></Button>
+      <ScrollView>{commentList}</ScrollView>
+    </View>
+  );
+
+  const _handleIndexChange = index => setIndex(index);
+
+  const _renderTabBar = props => {
+    const inputRange = props.navigationState.routes.map((x, i) => i);
+
+    return (
+      <View style={styles.tabBar}>
+        {props.navigationState.routes.map((route, i) => {
+          const color = Animated.color(
+            Animated.round(
+              Animated.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex =>
+                  inputIndex === i ? 125 : 211
+                )
+              })
+            ),
+            Animated.round(
+              Animated.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex =>
+                  inputIndex === i ? 202 : 211
+                )
+              })
+            ),
+            Animated.round(
+              Animated.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex =>
+                  inputIndex === i ? 172 : 211
+                )
+              })
+            )
+          );
+
+          return (
+            <TouchableOpacity
+              style={styles.tabItem}
+              onPress={() => setIndex(i)}
+            >
+              <Animated.Text style={{ color }}>{route.title}</Animated.Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  };
 
   const handleOnComment = () => {
     const com = { id: JSON.stringify(data.userName), comment };
@@ -24,10 +108,11 @@ export default function ContentDetailScreen(props) {
       .doc(props.detailInfo)
       .get()
       .then(function(doc) {
+        title.current = doc.data().title;
         const dataList = doc.data().comments;
         setCommentList(
-          dataList.map(info => (
-            <Text>
+          dataList.map((info, idx) => (
+            <Text key={idx}>
               {info.id} : {info.comment}
             </Text>
           ))
@@ -37,24 +122,54 @@ export default function ContentDetailScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text>{props.detailInfo}</Text>
-      <Button title="X" onPress={() => props.setIsDetail(false)} />
-      <TextInput
-        onChangeText={e => setComment(e)}
-        value={comment}
-        placeholder="댓글을 입력하세요"
-      ></TextInput>
-      <Button title="입력" onPress={handleOnComment}></Button>
-      {commentList}
+      <LinearGradient
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        colors={['#62cdaa', '#79d19b', '#90d392']}
+        style={styles.picBox}
+      >
+        <Text>{title.current}</Text>
+      </LinearGradient>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={SceneMap({
+          first: FirstRoute,
+          second: SecondRoute
+        })}
+        style={styles.infoBox}
+        renderTabBar={_renderTabBar}
+        onIndexChange={_handleIndexChange}
+        initialLayout={{ width: Dimensions.get('window').width }}
+      ></TabView>
     </View>
+
+    //     {/* <Button title="X" onPress={() => props.setIsDetail(false)} /> */}
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
+  },
+  picBox: {
+    flex: 4,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  tabBar: {
+    flexDirection: 'row'
+  },
+  tabItem: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    padding: 16
+  },
+  infoBox: {
+    flex: 5
+  },
+  scene: {
+    flex: 1
   }
 });
 
