@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,14 @@ import {
 } from 'react-native';
 import { firebaseApp } from '../firebase';
 import Content from './Content';
-export default function ContentScreen({ detailInfo, setIsDetail }) {
+const GREEN = '#7dcaac';
+
+export default function ContentScreen({
+  isHome,
+  setIsHomeDetail,
+  detailInfo,
+  setIsDetail
+}) {
   const [auth, users, contents] = firebaseApp();
   const [list, setList] = useState(undefined);
   const dataList = [];
@@ -27,6 +34,7 @@ export default function ContentScreen({ detailInfo, setIsDetail }) {
             <TouchableHighlight
               onPress={() => {
                 detailInfo.current = info.id;
+                if (isHome) setIsHomeDetail(true);
                 setIsDetail(true);
               }}
               underlayColor="white"
@@ -42,6 +50,7 @@ export default function ContentScreen({ detailInfo, setIsDetail }) {
   if (list) {
     return (
       <ScrollView>
+        {isHome ? <Text style={styles.text}>오늘의 추천</Text> : <></>}
         <View style={styles.container}>{list}</View>
       </ScrollView>
     );
@@ -55,6 +64,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  text: {
+    color: GREEN,
+    paddingLeft: 20,
+    paddingTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold'
   }
 });
 

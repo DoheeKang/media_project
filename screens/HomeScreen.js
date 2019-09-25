@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ContentScreen from './ContentScreen';
+
 import { LinearGradient } from 'expo-linear-gradient';
 
 import axios from 'axios';
@@ -84,6 +86,7 @@ export default function HomeScreen() {
   });
   const [dust, setDust] = useState({ pm10Grade: 1, pm25Grade: 1 });
   const [isLoad, setIsLoad] = useState(false);
+  const [isHomeDetail, setIsHomeDetail] = useState(false);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -107,31 +110,42 @@ export default function HomeScreen() {
     getInfo();
   }, []);
 
+  console.log('Home Screen: ', isHomeDetail);
   if (isLoad) {
     return (
       <View style={styles.container}>
-        <LinearGradient
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          colors={['#62cdaa', '#79d19b', '#90d392']}
-          style={styles.weather}
-        >
-          {/* <MaterialCommunityIcons
+        {isHomeDetail ? (
+          <></>
+        ) : (
+          <LinearGradient
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
+            colors={['#62cdaa', '#79d19b', '#90d392']}
+            style={styles.weather}
+          >
+            {/* <MaterialCommunityIcons
             color="black"
             size={144}
             name={weatherCases[weather.weather[0].main].icon}
           ></MaterialCommunityIcons> */}
-          <View>
-            <Text>오늘</Text>
-            <Text>서울 {Math.ceil(weather.main.temp - 273.15)}º</Text>
-            <Text>미세먼지 {fineDustCases[dust.pm10Grade].condition}</Text>
-            <Text>초미세먼지 {fineDustCases[dust.pm25Grade].condition}</Text>
-          </View>
-          <View>
-            <Text>우우우</Text>
-          </View>
-        </LinearGradient>
-        <View style={styles.contents}></View>
+            <View>
+              <Text>오늘</Text>
+              <Text>서울 {Math.ceil(weather.main.temp - 273.15)}º</Text>
+              <Text>미세먼지 {fineDustCases[dust.pm10Grade].condition}</Text>
+              <Text>초미세먼지 {fineDustCases[dust.pm25Grade].condition}</Text>
+            </View>
+            <View>
+              <Text>우우우</Text>
+            </View>
+          </LinearGradient>
+        )}
+
+        <View style={styles.contents}>
+          <ContentScreen
+            isHome={true}
+            setIsHomeDetail={setIsHomeDetail}
+          ></ContentScreen>
+        </View>
       </View>
     );
   } else {

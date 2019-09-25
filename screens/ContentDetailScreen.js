@@ -137,6 +137,13 @@ export default function ContentDetailScreen(props) {
         style={styles.picBox}
       >
         <Text>{title.current}</Text>
+        <Button
+          title="X"
+          onPress={() => {
+            if (props.isHome) props.setIsHomeDetail(false);
+            props.setIsDetail(false);
+          }}
+        />
         <Image
           source={{
             uri:
@@ -158,8 +165,6 @@ export default function ContentDetailScreen(props) {
         initialLayout={{ width: Dimensions.get('window').width }}
       ></TabView>
     </View>
-
-    //     {/* <Button title="X" onPress={() => props.setIsDetail(false)} /> */}
   );
 }
 
