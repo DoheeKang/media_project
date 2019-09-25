@@ -5,7 +5,6 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
-  Button,
   ScrollView,
   Dimensions
 } from 'react-native';
@@ -13,6 +12,7 @@ import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { firebaseApp, ContextSet } from '../firebase';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import { Image, Button } from 'react-native-elements';
 import firebase from 'firebase/app';
 
 export default function ContentDetailScreen(props) {
@@ -36,12 +36,20 @@ export default function ContentDetailScreen(props) {
 
   const SecondRoute = () => (
     <View style={styles.commentBox}>
-      <TextInput
-        onChangeText={e => setComment(e)}
-        value={comment}
-        placeholder="댓글을 입력하세요"
-      ></TextInput>
-      <Button title="입력" onPress={handleOnComment}></Button>
+      <View style={styles.comment}>
+        <TextInput
+          onChangeText={e => setComment(e)}
+          value={comment}
+          style={{ flex: 1 }}
+          placeholder="댓글을 입력하세요"
+        ></TextInput>
+        <Button
+          title="입력"
+          type="clear"
+          titleStyle={{ color: '#7dcaac' }}
+          onPress={handleOnComment}
+        ></Button>
+      </View>
       <ScrollView>{commentList}</ScrollView>
     </View>
   );
@@ -129,6 +137,14 @@ export default function ContentDetailScreen(props) {
         style={styles.picBox}
       >
         <Text>{title.current}</Text>
+        <Image
+          source={{
+            uri:
+              'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fdog.png?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
+          }}
+          containerStyle={{ borderRadius: 25, overflow: 'hidden' }}
+          style={{ width: 200, height: 200 }}
+        />
       </LinearGradient>
       <TabView
         navigationState={{ index, routes }}
@@ -164,6 +180,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     padding: 16
+  },
+  commentBox: {
+    flex: 1
+  },
+  comment: {
+    flexDirection: 'row',
+    height: 50
   },
   infoBox: {
     flex: 5
