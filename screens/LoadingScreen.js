@@ -1,11 +1,19 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Loading() {
   return (
-    <View style={styles.container}>
-      <Text>Loading...</Text>
-    </View>
+    <LinearGradient
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+      colors={['#62cdaa', '#79d19b', '#90d392']}
+      style={styles.container}
+    >
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    </LinearGradient>
   );
 }
 
