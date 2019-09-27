@@ -1,122 +1,88 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions
-} from 'react-native';
-import Animated from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
-import { firebaseApp, ContextSet } from '../firebase';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import { Image, Button } from 'react-native-elements';
+import { LinearGradient } from 'expo-linear-gradient';
+/* TabView */
+import { TabView, TabViewAnimated, TabBar } from 'react-native-tab-view';
+import LocInfo from './LocInfo';
+import LocComment from './LocComment';
+/* Firebase */
 import firebase from 'firebase/app';
+import { firebaseApp, ContextSet } from '../firebase';
 
-export default function ContentDetailScreen(props) {
-  const [auth, users, contents] = firebaseApp();
-  const [comment, setComment] = useState(undefined);
-  const [data, setData] = useContext(ContextSet.DataContext);
-  const [reLoad, setReload] = useState(false);
+const BLACK = '#000';
+const GREEN = '#7dcaac';
+const LIGHT_GRAY = '#D3D3D3';
+
+export default function ContentDetailScreen({ detailInfo }) {
+  const [comment, setComment] = useState('');
+  const [commentList, setCommentList] = useState(undefined);
+  const [reLoad, setReLoad] = useState(false);
+  const contentTitle = useRef('');
+  /* TabView */
   const [index, setIndex] = useState(0);
   const [routes, setRoutes] = useState([
     { key: 'first', title: '장소정보' },
     { key: 'second', title: '장소후기' }
   ]);
-  const [commentList, setCommentList] = useState(undefined);
-  const title = useRef('');
+  /* Firebase */
+  const [auth, users, contents] = firebaseApp();
+  const [data, setData] = useContext(ContextSet.DataContext);
 
-  const FirstRoute = () => (
-    <View style={styles.scene}>
-      <Text>장소 정보</Text>
-    </View>
-  );
+  /* TabView */
+  const renderScene = ({ route }) => {
+    if (!route.key) return null;
 
-  const SecondRoute = () => (
-    <View style={styles.commentBox}>
-      <View style={styles.comment}>
-        <TextInput
-          onChangeText={e => setComment(e)}
-          value={comment}
-          style={{ flex: 1 }}
-          placeholder="댓글을 입력하세요"
-        ></TextInput>
-        <Button
-          title="입력"
-          type="clear"
-          titleStyle={{ color: '#7dcaac' }}
-          onPress={handleOnComment}
-        ></Button>
-      </View>
-      <ScrollView>{commentList}</ScrollView>
-    </View>
-  );
+    if (route.key === 'first') {
+      return <LocInfo type="active" />;
+    }
 
-  const _handleIndexChange = index => setIndex(index);
-
-  const _renderTabBar = props => {
-    const inputRange = props.navigationState.routes.map((x, i) => i);
-
-    return (
-      <View style={styles.tabBar}>
-        {props.navigationState.routes.map((route, i) => {
-          const color = Animated.color(
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 125 : 211
-                )
-              })
-            ),
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 202 : 211
-                )
-              })
-            ),
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 172 : 211
-                )
-              })
-            )
-          );
-
-          return (
-            <TouchableOpacity
-              style={styles.tabItem}
-              onPress={() => setIndex(i)}
-            >
-              <Animated.Text style={{ color }}>{route.title}</Animated.Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
+    if (route.key === 'second') {
+      return (
+        <LocComment
+          type="inactive"
+          comment={comment}
+          setComment={setComment}
+          handleOnComment={handleOnComment}
+          commentList={commentList}
+        />
+      );
+    }
   };
 
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      style={{ backgroundColor: 'white' }}
+      indicatorStyle={{
+        backgroundColor: GREEN,
+        height: 3,
+        borderRadius: 30
+      }}
+      tabStyle={styles.bubble}
+      renderLabel={({ route, focused }) => {
+        const color = focused ? BLACK : LIGHT_GRAY;
+        return <Text style={{ color, margin: 8 }}>{route.title}</Text>;
+      }}
+    />
+  );
+
+  // 댓글을 입력할 때 실행
   const handleOnComment = () => {
     const com = { id: JSON.stringify(data.userName), comment };
-    contents.doc(props.detailInfo).update({
+    contents.doc(detailInfo).update({
       comments: firebase.firestore.FieldValue.arrayUnion(com)
     });
     setComment('');
-    setReload(!reLoad);
+    setReLoad(!reLoad);
   };
 
   useEffect(() => {
     contents
-      .doc(props.detailInfo)
+      .doc(detailInfo)
       .get()
-      .then(function(doc) {
-        title.current = doc.data().title;
+      .then(doc => {
+        contentTitle.current = doc.data().title;
         const dataList = doc.data().comments;
         setCommentList(
           dataList.map((info, idx) => (
@@ -136,14 +102,7 @@ export default function ContentDetailScreen(props) {
         colors={['#62cdaa', '#79d19b', '#90d392']}
         style={styles.picBox}
       >
-        <Text>{title.current}</Text>
-        <Button
-          title="X"
-          onPress={() => {
-            if (props.isHome) props.setIsHomeDetail(false);
-            props.setIsDetail(false);
-          }}
-        />
+        <Text>{contentTitle.current}</Text>
         <Image
           source={{
             uri:
@@ -151,17 +110,14 @@ export default function ContentDetailScreen(props) {
           }}
           containerStyle={{ borderRadius: 25, overflow: 'hidden' }}
           style={{ width: 200, height: 200 }}
-        />
+        ></Image>
       </LinearGradient>
       <TabView
         navigationState={{ index, routes }}
-        renderScene={SceneMap({
-          first: FirstRoute,
-          second: SecondRoute
-        })}
+        renderScene={renderScene}
         style={styles.infoBox}
-        renderTabBar={_renderTabBar}
-        onIndexChange={_handleIndexChange}
+        onIndexChange={idx => setIndex(idx)}
+        renderTabBar={renderTabBar}
         initialLayout={{ width: Dimensions.get('window').width }}
       ></TabView>
     </View>
@@ -177,27 +133,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  tabBar: {
-    flexDirection: 'row'
-  },
-  tabItem: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    padding: 16
-  },
-  commentBox: {
-    flex: 1
-  },
-  comment: {
-    flexDirection: 'row',
-    height: 50
-  },
   infoBox: {
     flex: 5
   },
-  scene: {
-    flex: 1
+  input: {
+    paddingTop: 30
+  },
+  label: {
+    color: 'black'
   }
 });
 

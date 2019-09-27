@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import ContentList from './ContentList';
-import ContetnDetailScreen from './ContentDetailScreen';
+import ContentDetailScreen from './ContentDetailScreen';
 
 export default function ContentScreen({ isHome, setIsHomeDetail }) {
   const [isDetail, setIsDetail] = useState(false);
@@ -17,7 +17,7 @@ export default function ContentScreen({ isHome, setIsHomeDetail }) {
     );
   } else {
     return (
-      <ContetnDetailScreen
+      <ContentDetailScreen
         detailInfo={detailInfo.current}
         isHome={isHome}
         setIsHomeDetail={setIsHomeDetail}
