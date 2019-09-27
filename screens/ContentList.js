@@ -50,7 +50,9 @@ export default function ContentScreen({
   if (list) {
     return (
       <ScrollView>
-        {isHome ? <Text style={styles.text}>오늘의 추천</Text> : <></>}
+        <Text style={styles.text}>
+          {isHome ? `오늘의 추천` : `나들이 장소`}
+        </Text>
         <View style={styles.container}>{list}</View>
       </ScrollView>
     );
