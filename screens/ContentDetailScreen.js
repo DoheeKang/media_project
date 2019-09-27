@@ -1,20 +1,35 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { Image, Button } from 'react-native-elements';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableHighlight
+} from 'react-native';
+import { Image } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 /* TabView */
-import { TabView, TabViewAnimated, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import LocInfo from './LocInfo';
 import LocComment from './LocComment';
 /* Firebase */
 import firebase from 'firebase/app';
 import { firebaseApp, ContextSet } from '../firebase';
+/* Image */
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 const BLACK = '#000';
 const GREEN = '#7dcaac';
 const LIGHT_GRAY = '#D3D3D3';
 
-export default function ContentDetailScreen({ detailInfo }) {
+const width = Dimensions.get('window').width;
+
+export default function ContentDetailScreen({
+  detailInfo,
+  isHome,
+  setIsHomeDetail,
+  setIsDetail
+}) {
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState(undefined);
   const [reLoad, setReLoad] = useState(false);
@@ -102,15 +117,72 @@ export default function ContentDetailScreen({ detailInfo }) {
         colors={['#62cdaa', '#79d19b', '#90d392']}
         style={styles.picBox}
       >
-        <Text>{contentTitle.current}</Text>
-        <Image
-          source={{
-            uri:
-              'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fdog.png?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
+        <View
+          style={{
+            flex: 1,
+            paddingLeft: 30,
+            paddingRight: 30
           }}
-          containerStyle={{ borderRadius: 25, overflow: 'hidden' }}
-          style={{ width: 200, height: 200 }}
-        ></Image>
+        >
+          <View
+            style={{
+              flex: 2,
+              justifyContent: 'flex-end',
+              marginBottom: 0,
+              paddingBottom: 0
+            }}
+          >
+            <TouchableHighlight
+              onPress={() => {
+                if (isHome) setIsHomeDetail(false);
+                setIsDetail(false);
+              }}
+              underlayColor="white"
+            >
+              <MaterialIcons
+                color="white"
+                size={40}
+                name="keyboard-backspace"
+              ></MaterialIcons>
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              flex: 7
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                paddingLeft: 10,
+                paddingVertical: 6,
+                justifyContent: 'flex-start',
+                paddingTop: 0
+              }}
+            >
+              {contentTitle.current}
+            </Text>
+            <Image
+              source={{
+                uri:
+                  'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fcat.jpg?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
+              }}
+              containerStyle={{ borderRadius: 45, overflow: 'hidden' }}
+              style={{ width: width - 60, height: 170 }}
+            ></Image>
+            <View style={{ flexDirection: 'row' }}>
+              <AntDesign color="white" size={30} name="star"></AntDesign>
+              <Text>4.3</Text>
+              <MaterialIcons
+                color="white"
+                size={30}
+                name="bookmark-border"
+              ></MaterialIcons>
+              <Text>북마크</Text>
+            </View>
+          </View>
+        </View>
       </LinearGradient>
       <TabView
         navigationState={{ index, routes }}
@@ -118,7 +190,7 @@ export default function ContentDetailScreen({ detailInfo }) {
         style={styles.infoBox}
         onIndexChange={idx => setIndex(idx)}
         renderTabBar={renderTabBar}
-        initialLayout={{ width: Dimensions.get('window').width }}
+        initialLayout={{ width }}
       ></TabView>
     </View>
   );
@@ -129,12 +201,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   picBox: {
-    flex: 4,
-    alignItems: 'center',
-    justifyContent: 'center'
+    flex: 1
   },
   infoBox: {
-    flex: 5
+    flex: 1
   },
   input: {
     paddingTop: 30
