@@ -10,10 +10,7 @@ import {
 import { Avatar, Divider, Card } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { firebaseApp, ContextSet } from '../firebase';
-
 import { MaterialIcons } from '@expo/vector-icons';
-
-import LogoutScreen from '../components/Logout';
 
 const width = Dimensions.get('window').width;
 const gray = '#f2f2f2';
