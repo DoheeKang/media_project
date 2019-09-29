@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Dimensions,
-  TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
 import { Image, Rating, Icon } from 'react-native-elements';
@@ -21,7 +20,7 @@ import { firebaseApp, ContextSet } from '../firebase';
 /* Image */
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-const { white, black, focusGreen, lightGray } = Colors;
+const { white, black, focusGreen, lightGray, textColor } = Colors;
 
 const width = Dimensions.get('window').width;
 
@@ -86,7 +85,7 @@ export default function ContentDetailScreen({
       }}
       tabStyle={styles.bubble}
       renderLabel={({ route, focused }) => {
-        const color = focused ? black : lightGray;
+        const color = focused ? textColor : lightGray;
         return <Text style={{ color, margin: 8 }}>{route.title}</Text>;
       }}
     />
@@ -174,18 +173,7 @@ export default function ContentDetailScreen({
               flex: 7
             }}
           >
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                paddingLeft: 10,
-                paddingVertical: 6,
-                justifyContent: 'flex-start',
-                paddingTop: 0
-              }}
-            >
-              {contentTitle.current}
-            </Text>
+            <Text style={styles.title}>{contentTitle.current}</Text>
             <Image
               source={{
                 uri:
@@ -194,15 +182,35 @@ export default function ContentDetailScreen({
               containerStyle={{ borderRadius: 45, overflow: 'hidden' }}
               style={{ width: width - 60, height: 170 }}
             ></Image>
-            <View style={{ flexDirection: 'row' }}>
-              <AntDesign color="white" size={30} name="star"></AntDesign>
-              <Text>{rating.current}</Text>
-              <MaterialIcons
-                color="white"
-                size={30}
-                name="bookmark-border"
-              ></MaterialIcons>
-              <Text>북마크</Text>
+            <View
+              style={{
+                paddingTop: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-evenly'
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <AntDesign color="white" size={30} name="star"></AntDesign>
+                <Text style={styles.text}>{rating.current}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <MaterialIcons
+                  color="white"
+                  size={30}
+                  name="bookmark-border"
+                ></MaterialIcons>
+                <Text style={styles.text}>즐겨찾기</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -253,8 +261,19 @@ const styles = StyleSheet.create({
   input: {
     paddingTop: 30
   },
-  label: {
-    color: black
+  title: {
+    fontSize: 20,
+    fontFamily: 'BMDOHYEON',
+    color: textColor,
+    paddingLeft: 10,
+    paddingVertical: 6,
+    justifyContent: 'flex-start',
+    paddingTop: 0
+  },
+  text: {
+    paddingLeft: 4,
+    fontFamily: 'BMDOHYEON',
+    color: textColor
   }
 });
 
