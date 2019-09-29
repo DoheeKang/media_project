@@ -4,6 +4,7 @@ import {
   Text,
   View,
   Dimensions,
+  TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
 import { Image, Rating, Icon, Divider } from 'react-native-elements';
@@ -19,10 +20,11 @@ import LocComment from './LocComment';
 /* Firebase */
 import firebase from 'firebase/app';
 import { firebaseApp, ContextSet } from '../firebase';
+import useAuth from '../firebase/useAuth';
 /* Image */
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-const { white, gray, focusGreen, lightGray, textColor } = Colors;
+const { white, focusGreen, lightGray, textColor } = Colors;
 
 const width = Dimensions.get('window').width;
 
@@ -40,9 +42,11 @@ export default function ContentDetailScreen({
     description: ''
   });
   const [reLoad, setReLoad] = useState(false);
+  const [isBookMark, setIsBookMark] = useState(false);
   const contentTitle = useRef('');
   const rating = useRef(0);
   const count = useRef(0);
+  const bookIdx = useRef(0);
   const commentRating = useRef('');
   /* TabView */
   const [index, setIndex] = useState(0);
@@ -52,6 +56,8 @@ export default function ContentDetailScreen({
   ]);
   /* Firebase */
   const [auth, users, contents] = firebaseApp();
+  const { initializing, user } = useAuth();
+
   const [data, setData] = useContext(ContextSet.DataContext);
   const { fullDay } = Layout;
   /* TabView */
@@ -107,6 +113,15 @@ export default function ContentDetailScreen({
     />
   );
 
+  const handleBookMark = () => {
+    if (!isBookMark) {
+      setIsBookMark(true);
+      users.doc(user.uid).update({
+        likes: firebase.firestore.FieldValue.arrayUnion(detailInfo)
+      });
+    }
+  };
+
   // 댓글을 입력할 때 실행
   const handleOnComment = () => {
     const time = `${fullDay.year}.${fullDay.month}.${fullDay.date}`;
@@ -130,6 +145,16 @@ export default function ContentDetailScreen({
   };
 
   useEffect(() => {
+    users
+      .doc(user.uid)
+      .get()
+      .then(doc => {
+        if (doc.data().likes.includes(detailInfo)) {
+          bookIdx.current = doc.data().likes.indexOf(detailInfo);
+          setIsBookMark(true);
+        }
+      });
+
     contents
       .doc(detailInfo)
       .get()
@@ -248,11 +273,16 @@ export default function ContentDetailScreen({
                   alignItems: 'center'
                 }}
               >
-                <MaterialIcons
-                  color="white"
-                  size={30}
-                  name="bookmark-border"
-                ></MaterialIcons>
+                <TouchableHighlight
+                  onPress={handleBookMark}
+                  underlayColor={focusGreen}
+                >
+                  <MaterialIcons
+                    color="white"
+                    size={30}
+                    name={isBookMark ? 'bookmark' : 'bookmark-border'}
+                  ></MaterialIcons>
+                </TouchableHighlight>
                 <Text style={styles.text}>즐겨찾기</Text>
               </View>
             </View>
