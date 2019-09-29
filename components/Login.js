@@ -7,13 +7,12 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import { LinearGradient } from 'expo-linear-gradient';
+import Colors from '../constants/Colors';
 
 import { ContextSet } from '../firebase';
-import { LinearGradient } from 'expo-linear-gradient';
 
-const WHITE = '#FFF';
-const GREEN = '#7dcaac';
-const LIGHT_GRAY = '#D3D3D3';
+const { white, lightGray, focusGreen } = Colors;
 
 const LoginScreen = ({
   email,
@@ -47,8 +46,8 @@ const LoginScreen = ({
       >
         <TextInput
           placeholder="E-MAIL"
-          selectionColor={WHITE}
-          underlineColorAndroid={isfocusedEmail ? WHITE : LIGHT_GRAY}
+          selectionColor={white}
+          underlineColorAndroid={isfocusedEmail ? white : lightGray}
           onFocus={() => setIsFocusedEmail(true)}
           onBlur={() => setIsFocusedEmail(false)}
           style={styles.textInput}
@@ -56,13 +55,13 @@ const LoginScreen = ({
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
-          placeholderTextColor={LIGHT_GRAY}
+          placeholderTextColor={lightGray}
           onChangeText={e => setEmail(e)}
         />
         <TextInput
           placeholder="PASSWORD"
-          selectionColor={WHITE}
-          underlineColorAndroid={isfocusedPW ? WHITE : LIGHT_GRAY}
+          selectionColor={white}
+          underlineColorAndroid={isfocusedPW ? white : lightGray}
           onFocus={() => setIsFocusedPW(true)}
           onBlur={() => setIsFocusedPW(false)}
           style={styles.textInput}
@@ -70,21 +69,21 @@ const LoginScreen = ({
           autoCapitalize="none"
           autoCorrect={false}
           secureTextEntry={true}
-          placeholderTextColor={LIGHT_GRAY}
+          placeholderTextColor={lightGray}
           onChangeText={e => setPassword(e)}
         />
         <View style={styles.buttonBox}>
           <Button
-            buttonStyle={{ backgroundColor: WHITE, borderRadius: 15 }}
-            titleStyle={{ color: GREEN }}
             title="LOGIN"
+            titleStyle={{ color: focusGreen }}
+            buttonStyle={styles.button}
             onPress={handleOnClickLogin}
           />
         </View>
         <Button
           title="SIGN UP"
           type="clear"
-          titleStyle={{ color: LIGHT_GRAY }}
+          titleStyle={{ color: lightGray }}
           onPress={() => setSignupPage(true)}
         />
       </LinearGradient>
@@ -105,13 +104,17 @@ const styles = StyleSheet.create({
     width: 150,
     paddingTop: 30
   },
+  button: {
+    backgroundColor: white,
+    borderRadius: 15
+  },
   textInput: {
     width: 250,
     padding: 10,
     paddingHorizontal: 16,
     fontSize: 16,
     marginVertical: 10,
-    color: WHITE
+    color: white
   }
 });
 
