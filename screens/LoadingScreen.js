@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+
+import logoIcon from '../assets/images/logo.png';
 
 export default function Loading() {
   return (
@@ -10,9 +12,7 @@ export default function Loading() {
       colors={['#62cdaa', '#79d19b', '#90d392']}
       style={styles.container}
     >
-      <View>
-        <Text>Loading...</Text>
-      </View>
+      <Image source={logoIcon} style={{ width: 100, height: 100 }} />
     </LinearGradient>
   );
 }
