@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableHighlight
 } from 'react-native';
-import { Image } from 'react-native-elements';
+import { Image, Rating } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 /* TabView */
 import { TabView, TabBar } from 'react-native-tab-view';
@@ -101,9 +101,12 @@ export default function ContentDetailScreen({
         const dataList = doc.data().comments;
         setCommentList(
           dataList.map((info, idx) => (
-            <Text key={idx}>
-              {info.id} : {info.comment}
-            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Rating imageSize={20} readonly startingValue={4} />
+              <Text key={idx}>
+                {info.id} : {info.comment}
+              </Text>
+            </View>
           ))
         );
       });
