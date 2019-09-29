@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  SafeAreaView
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import Colors from '../constants/Colors';
+import { AntDesign } from '@expo/vector-icons';
+
+const { textColor, focusGreen, lightGray } = Colors;
 
 /* Image */
 import locInfoIcon from '../assets/images/locInfo.png';
@@ -17,14 +29,23 @@ export default function LocInfo({ contentInfo }) {
     if (tempInfo.length) {
       setInfoList(
         tempInfo.map((i, idx) => {
-          return <Text key={idx}>{i}</Text>;
+          return (
+            <Text key={idx} style={[styles.text, styles.comment]}>
+              {i}
+            </Text>
+          );
         })
       );
       for (const key in tempBaby) {
         tempArr.push(
-          <View style={{ flexDirection: 'row' }}>
-            <Text>{key}</Text>
-            <Text>{tempBaby[key] ? 'O' : 'X'}</Text>
+          <View key={key} style={{ flexDirection: 'row' }}>
+            <AntDesign
+              size={15}
+              name={tempBaby[key] ? 'closecircle' : 'checkcircle'}
+              color={tempBaby[key] ? lightGray : focusGreen}
+              style={{ paddingTop: 5 }}
+            ></AntDesign>
+            <Text style={[styles.text, styles.comment]}>{key}</Text>
           </View>
         );
       }
@@ -32,30 +53,49 @@ export default function LocInfo({ contentInfo }) {
     }
   }, [contentInfo]);
   return (
-    <ScrollView style={styles.container}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={locDesIcon} style={{ width: 30, height: 30 }} />
-        <Text>장소소개</Text>
-      </View>
-      <Text>{contentInfo.description}</Text>
-      <Text></Text>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={locInfoIcon} style={{ width: 30, height: 30 }} />
-        <Text>기본정보</Text>
-      </View>
-      <View>{infoList}</View>
-      <Text></Text>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={locBabyIcon} style={{ width: 30, height: 30 }} />
-        <Text>유아편의시설</Text>
-      </View>
-      <View>{facList}</View>
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={locDesIcon} style={{ width: 25, height: 25 }} />
+          <Text style={[styles.text, styles.title]}>장소안내</Text>
+        </View>
+        <Text style={[styles.text, styles.content]}>
+          {contentInfo.description}
+        </Text>
+        <Text></Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={locInfoIcon} style={{ width: 25, height: 25 }} />
+          <Text style={[styles.text, styles.title]}>기본정보</Text>
+        </View>
+        <View>{infoList}</View>
+        <Text></Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={locBabyIcon} style={{ width: 25, height: 25 }} />
+          <Text style={[styles.text, styles.title]}>유아편의시설</Text>
+        </View>
+        <View>{facList}</View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingLeft: 10,
+    paddingTop: 10
+  },
+  text: {
+    paddingTop: 5,
+    fontFamily: 'BMDOHYEON',
+    color: textColor
+  },
+  title: {
+    color: focusGreen,
+    fontSize: 15,
+    paddingLeft: 3
+  },
+  content: {
+    fontSize: 13
   }
 });
