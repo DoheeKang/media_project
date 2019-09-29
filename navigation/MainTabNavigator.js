@@ -27,7 +27,7 @@ const MapStack = createStackNavigator({
 
 MapStack.navigationOptions = {
   tabBarLabel: 'Map',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-map" />
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-pin" />
 };
 
 MapStack.path = '';
@@ -38,7 +38,7 @@ const ContentStack = createStackNavigator({
 
 ContentStack.navigationOptions = {
   tabBarLabel: 'Contents',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-locate" />
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-paper" />
 };
 
 ContentStack.path = '';
