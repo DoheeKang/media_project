@@ -33,6 +33,11 @@ export default function ContentDetailScreen({
 }) {
   const [comment, setComment] = useState('');
   const [commentList, setCommentList] = useState(undefined);
+  const [contentInfo, setcontentInfo] = useState({
+    info: '',
+    facilities: {},
+    description: ''
+  });
   const [reLoad, setReLoad] = useState(false);
   const contentTitle = useRef('');
   const rating = useRef('');
@@ -51,7 +56,7 @@ export default function ContentDetailScreen({
     if (!route.key) return null;
 
     if (route.key === 'first') {
-      return <LocInfo type="active" />;
+      return <LocInfo contentInfo={contentInfo} type="active" />;
     }
 
     if (route.key === 'second') {
@@ -100,6 +105,11 @@ export default function ContentDetailScreen({
       .doc(detailInfo)
       .get()
       .then(doc => {
+        setcontentInfo({
+          info: doc.data().info,
+          facilities: doc.data().facilities,
+          description: doc.data().description
+        });
         contentTitle.current = doc.data().title;
         const dataList = doc.data().comments;
         setCommentList(
