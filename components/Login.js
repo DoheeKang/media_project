@@ -4,11 +4,13 @@ import {
   View,
   TextInput,
   Alert,
+  Image,
   KeyboardAvoidingView
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '../constants/Colors';
+import logoIcon from '../assets/images/logo.png';
 
 import { ContextSet } from '../firebase';
 
@@ -44,6 +46,7 @@ const LoginScreen = ({
         colors={['#62cdaa', '#79d19b', '#90d392']}
         style={styles.inputBox}
       >
+        <Image source={logoIcon} style={{ width: 100, height: 100 }} />
         <TextInput
           placeholder="E-MAIL"
           selectionColor={white}
@@ -75,7 +78,11 @@ const LoginScreen = ({
         <View style={styles.buttonBox}>
           <Button
             title="LOGIN"
-            titleStyle={{ color: focusGreen }}
+            titleStyle={{
+              color: focusGreen,
+              fontFamily: 'BMDOHYEON',
+              fontSize: 14
+            }}
             buttonStyle={styles.button}
             onPress={handleOnClickLogin}
           />
@@ -83,7 +90,11 @@ const LoginScreen = ({
         <Button
           title="SIGN UP"
           type="clear"
-          titleStyle={{ color: lightGray }}
+          titleStyle={{
+            color: lightGray,
+            fontFamily: 'BMDOHYEON',
+            fontSize: 14
+          }}
           onPress={() => setSignupPage(true)}
         />
       </LinearGradient>
@@ -112,7 +123,8 @@ const styles = StyleSheet.create({
     width: 250,
     padding: 10,
     paddingHorizontal: 16,
-    fontSize: 16,
+    fontFamily: 'BMDOHYEON',
+    fontSize: 15,
     marginVertical: 10,
     color: white
   }
