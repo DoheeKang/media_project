@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  KeyboardAvoidingView
-} from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import { Button, AirbnbRating } from 'react-native-elements';
 
 const gray = '#f2f2f2';
@@ -38,7 +32,7 @@ export default function LocComment({
           ></Button>
         </View>
       </View>
-      <View>{commentList}</View>
+      <ScrollView>{commentList}</ScrollView>
     </View>
   );
 }

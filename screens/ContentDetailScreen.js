@@ -4,7 +4,8 @@ import {
   Text,
   View,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  KeyboardAvoidingView
 } from 'react-native';
 import { Image, Rating } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -100,20 +101,28 @@ export default function ContentDetailScreen({
         contentTitle.current = doc.data().title;
         const dataList = doc.data().comments;
         setCommentList(
-          dataList.map((info, idx) => (
-            <View style={{ flexDirection: 'row' }}>
-              <Rating imageSize={20} readonly startingValue={4} />
-              <Text key={idx}>
-                {info.id} : {info.comment}
-              </Text>
-            </View>
-          ))
+          dataList
+            .map((info, idx) => {
+              return (
+                <View key={idx}>
+                  <Rating imageSize={20} readonly startingValue={4} />
+                  <Text>{info.id}</Text>
+                  <Text>{info.comment}</Text>
+                </View>
+              );
+            })
+            .reverse()
         );
       });
   }, [reLoad]);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+      enabled
+      keyboardVerticalOffset={10}
+    >
       <LinearGradient
         start={{ x: 0, y: 0.5 }}
         end={{ x: 1, y: 0.5 }}
@@ -195,7 +204,7 @@ export default function ContentDetailScreen({
         renderTabBar={renderTabBar}
         initialLayout={{ width }}
       ></TabView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
