@@ -40,7 +40,9 @@ export default function ContentDetailScreen({
   });
   const [reLoad, setReLoad] = useState(false);
   const contentTitle = useRef('');
-  const rating = useRef('');
+  const rating = useRef(0);
+  const count = useRef(0);
+  const commentRating = useRef('');
   /* TabView */
   const [index, setIndex] = useState(0);
   const [routes, setRoutes] = useState([
@@ -64,7 +66,7 @@ export default function ContentDetailScreen({
         <LocComment
           type="inactive"
           comment={comment}
-          rating={rating}
+          commentRating={commentRating}
           setComment={setComment}
           handleOnComment={handleOnComment}
           commentList={commentList}
@@ -92,9 +94,15 @@ export default function ContentDetailScreen({
 
   // 댓글을 입력할 때 실행
   const handleOnComment = () => {
-    const com = { id: data.userName, comment, rating: rating.current };
+    const com = { id: data.userName, comment, rating: commentRating.current };
+    rating.current = (
+      (rating.current * count.current + commentRating.current) /
+      ++count.current
+    ).toFixed(1);
     contents.doc(detailInfo).update({
-      comments: firebase.firestore.FieldValue.arrayUnion(com)
+      comments: firebase.firestore.FieldValue.arrayUnion(com),
+      rating: rating.current,
+      count: count.current
     });
     setComment('');
     setReLoad(!reLoad);
@@ -105,6 +113,8 @@ export default function ContentDetailScreen({
       .doc(detailInfo)
       .get()
       .then(doc => {
+        rating.current = doc.data().rating;
+        count.current = doc.data().count;
         setcontentInfo({
           info: doc.data().info,
           facilities: doc.data().facilities,
@@ -115,6 +125,7 @@ export default function ContentDetailScreen({
         setCommentList(
           dataList
             .map((info, idx) => {
+              console.log(info);
               return (
                 <View key={idx}>
                   <Rating imageSize={20} readonly startingValue={info.rating} />
@@ -197,7 +208,7 @@ export default function ContentDetailScreen({
             ></Image>
             <View style={{ flexDirection: 'row' }}>
               <AntDesign color="white" size={30} name="star"></AntDesign>
-              <Text>4.3</Text>
+              <Text>{rating.current}</Text>
               <MaterialIcons
                 color="white"
                 size={30}

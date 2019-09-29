@@ -6,7 +6,7 @@ const gray = '#f2f2f2';
 
 export default function LocComment({
   comment,
-  rating,
+  commentRating,
   setComment,
   handleOnComment,
   commentList
@@ -17,7 +17,7 @@ export default function LocComment({
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text>별점 입력</Text>
           <AirbnbRating
-            onFinishRating={r => (rating.current = r)}
+            onFinishRating={r => (commentRating.current = r)}
             showRating={false}
             size={25}
           />
