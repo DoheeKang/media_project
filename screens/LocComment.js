@@ -28,6 +28,7 @@ export default function LocComment({
           </Text>
           <AirbnbRating
             onFinishRating={r => (commentRating.current = r)}
+            defaultRating={0}
             showRating={false}
             size={22}
           />

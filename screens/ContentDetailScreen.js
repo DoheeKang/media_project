@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { Image, Rating, Icon, Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+import Layout from '../constants/Layout';
+
 import logoIcon from '../assets/images/logo.png';
 import Colors from '../constants/Colors';
 /* TabView */
@@ -20,7 +22,7 @@ import { firebaseApp, ContextSet } from '../firebase';
 /* Image */
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-const { white, black, focusGreen, lightGray, textColor } = Colors;
+const { white, gray, focusGreen, lightGray, textColor } = Colors;
 
 const width = Dimensions.get('window').width;
 
@@ -51,7 +53,7 @@ export default function ContentDetailScreen({
   /* Firebase */
   const [auth, users, contents] = firebaseApp();
   const [data, setData] = useContext(ContextSet.DataContext);
-
+  const { fullDay } = Layout;
   /* TabView */
   const renderScene = ({ route }) => {
     if (!route.key) return null;
@@ -107,7 +109,13 @@ export default function ContentDetailScreen({
 
   // 댓글을 입력할 때 실행
   const handleOnComment = () => {
-    const com = { id: data.userName, comment, rating: commentRating.current };
+    const time = `${fullDay.year}.${fullDay.month}.${fullDay.date}`;
+    const com = {
+      id: data.userName,
+      comment,
+      rating: commentRating.current,
+      time
+    };
     rating.current = (
       (rating.current * count.current + commentRating.current) /
       ++count.current
@@ -140,8 +148,28 @@ export default function ContentDetailScreen({
             .map((info, idx) => {
               return (
                 <View key={idx}>
-                  <Rating imageSize={20} readonly startingValue={info.rating} />
-                  <Text style={[styles.text, styles.id]}>{info.id}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      paddingLeft: 4,
+                      paddingVertical: 10
+                    }}
+                  >
+                    <Rating
+                      imageSize={20}
+                      readonly
+                      startingValue={info.rating}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row'
+                    }}
+                  >
+                    <Text style={[styles.text, styles.id]}>{info.id}</Text>
+                    <Text style={[styles.text, styles.time]}>{info.time}</Text>
+                  </View>
                   <Text style={[styles.text, styles.comment]}>
                     {info.comment}
                   </Text>
@@ -291,10 +319,16 @@ const styles = StyleSheet.create({
   id: {
     fontSize: 13,
     color: focusGreen,
-    paddingVertical: 2
+    paddingBottom: 10
   },
   comment: {
-    fontSize: 10
+    fontSize: 10,
+    paddingBottom: 10
+  },
+  time: {
+    fontSize: 8,
+    justifyContent: 'center',
+    color: lightGray
   }
 });
 
