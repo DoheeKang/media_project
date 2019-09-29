@@ -6,7 +6,7 @@ import {
   Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
-import { Image, Rating, Icon } from 'react-native-elements';
+import { Image, Rating, Icon, Divider } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import logoIcon from '../assets/images/logo.png';
 import Colors from '../constants/Colors';
@@ -83,10 +83,24 @@ export default function ContentDetailScreen({
         height: 3,
         borderRadius: 30
       }}
-      tabStyle={styles.bubble}
+      tabStyle={{ height: 40 }}
       renderLabel={({ route, focused }) => {
         const color = focused ? textColor : lightGray;
-        return <Text style={{ color, margin: 8 }}>{route.title}</Text>;
+        return (
+          <Text
+            style={{
+              color,
+              margin: 8,
+              justifyContent: 'center',
+              alignContent: 'center',
+              fontSize: 12,
+              paddingBottom: 10,
+              fontFamily: 'BMDOHYEON'
+            }}
+          >
+            {route.title}
+          </Text>
+        );
       }}
     />
   );
@@ -124,12 +138,14 @@ export default function ContentDetailScreen({
         setCommentList(
           dataList
             .map((info, idx) => {
-              console.log(info);
               return (
                 <View key={idx}>
                   <Rating imageSize={20} readonly startingValue={info.rating} />
-                  <Text>{info.id}</Text>
-                  <Text>{info.comment}</Text>
+                  <Text style={[styles.text, styles.id]}>{info.id}</Text>
+                  <Text style={[styles.text, styles.comment]}>
+                    {info.comment}
+                  </Text>
+                  <Divider style={{ height: 1, backgroundColor: lightGray }} />
                 </View>
               );
             })
@@ -258,9 +274,6 @@ const styles = StyleSheet.create({
   infoBox: {
     flex: 1
   },
-  input: {
-    paddingTop: 30
-  },
   title: {
     fontSize: 20,
     fontFamily: 'BMDOHYEON',
@@ -274,6 +287,14 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     fontFamily: 'BMDOHYEON',
     color: textColor
+  },
+  id: {
+    fontSize: 13,
+    color: focusGreen,
+    paddingVertical: 2
+  },
+  comment: {
+    fontSize: 10
   }
 });
 
