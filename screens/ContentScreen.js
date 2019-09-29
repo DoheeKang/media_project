@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import logoIcon from '../assets/images/logo.png';
 import ContentList from './ContentList';
 import ContentDetailScreen from './ContentDetailScreen';
 
@@ -19,8 +20,14 @@ export default function ContentScreen({ isHome, setIsHomeDetail }) {
             start={{ x: 0, y: 0.5 }}
             end={{ x: 1, y: 0.5 }}
             colors={['#62cdaa', '#79d19b', '#90d392']}
-            style={{ flex: 1 }}
-          ></LinearGradient>
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <Image source={logoIcon} style={{ width: 70, height: 70 }} />
+          </LinearGradient>
         )}
         <View style={{ flex: 7 }}>
           <ContentList

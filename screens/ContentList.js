@@ -6,9 +6,11 @@ import {
   TouchableHighlight,
   ScrollView
 } from 'react-native';
-import { firebaseApp } from '../firebase';
 import Content from './Content';
-const GREEN = '#7dcaac';
+import Colors from '../constants/Colors';
+import { firebaseApp } from '../firebase';
+
+const { focusGreen } = Colors;
 
 export default function ContentScreen({
   isHome,
@@ -51,7 +53,7 @@ export default function ContentScreen({
     return (
       <ScrollView>
         <Text style={styles.text}>
-          {isHome ? `오늘의 추천` : `나들이 장소`}
+          {isHome ? '오늘의 추천' : '나들이 장소'}
         </Text>
         <View style={styles.container}>{list}</View>
       </ScrollView>
@@ -68,11 +70,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    color: GREEN,
+    color: focusGreen,
     paddingLeft: 20,
     paddingTop: 20,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontFamily: 'BMDOHYEON'
   }
 });
 

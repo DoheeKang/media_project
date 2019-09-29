@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import Colors from '../constants/Colors';
 import { Card } from 'react-native-elements';
+
+const { focusGreen } = Colors;
 
 export default function Content({ data }) {
   return (
@@ -13,8 +16,8 @@ export default function Content({ data }) {
         }}
       >
         <View>
-          <Text>{data.title}</Text>
-          <Text>{data.location}</Text>
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.text}>{data.location}</Text>
         </View>
       </Card>
     </View>
@@ -24,6 +27,16 @@ export default function Content({ data }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10
+  },
+  title: {
+    fontSize: 14,
+    fontFamily: 'BMDOHYEON',
+    color: focusGreen,
+    marginVertical: 2
+  },
+  text: {
+    fontSize: 10,
+    fontFamily: 'BMDOHYEON'
   },
   content: {
     width: 300,
