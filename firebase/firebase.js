@@ -11,7 +11,9 @@ const firebaseApp = () => {
   const auth = firebase.auth();
   const users = firebase.firestore().collection('users');
   const contents = firebase.firestore().collection('contents');
-  return [auth, users, contents];
+  const location = firebase.firestore().collection('location');
+
+  return [auth, users, contents, location];
 };
 
 export default firebaseApp;
