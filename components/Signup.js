@@ -10,11 +10,11 @@ import {
   ScrollView
 } from 'react-native';
 import { Button, Header, Icon } from 'react-native-elements';
+import Colors from '../constants/Colors';
+
 import { firebaseApp } from '../firebase';
 
-const FOCUS_GREEN = '#7dcaac';
-const BLUR_GREEN = '#acc9be';
-const LIGHT_GRAY = '#D3D3D3';
+const { lightGray, focusGreen, blurGreen } = Colors;
 
 const SignupScreen = ({ setSignupPage, setData }) => {
   const [auth, users] = firebaseApp();
@@ -35,7 +35,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           .createUserWithEmailAndPassword(email, password)
           .then(auth => {
             const authData = auth.user;
-            const data = { email, userName };
+            const data = { email, userName, like: [] };
             users.doc(authData.uid).set(data);
             setData(data);
             setSignupPage(false);
@@ -55,7 +55,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
       style={styles.container}
       behavior="padding"
       enabled
-      keyboardVerticalOffset={20}
+      keyboardVerticalOffset={10}
     >
       <Header
         leftComponent={
@@ -63,10 +63,13 @@ const SignupScreen = ({ setSignupPage, setData }) => {
             name="arrow-back"
             color="#fff"
             onPress={() => setSignupPage(false)}
-            underlayColor={FOCUS_GREEN}
+            underlayColor={focusGreen}
           />
         }
-        centerComponent={{ text: '회원가입', style: { color: '#fff' } }}
+        centerComponent={{
+          text: '회원가입',
+          style: { color: '#fff', fontSize: 17, fontFamily: 'BMDOHYEON' }
+        }}
         ViewComponent={LinearGradient}
         linearGradientProps={{
           colors: ['#62cdaa', '#79d19b', '#90d392'],
@@ -77,42 +80,42 @@ const SignupScreen = ({ setSignupPage, setData }) => {
       <ScrollView>
         <View style={styles.inputBox}>
           <TextInput
-            placeholder="이름"
-            selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedName ? FOCUS_GREEN : BLUR_GREEN}
+            placeholder="아이디"
+            selectionColor={focusGreen}
+            underlineColorAndroid={isFocusedName ? focusGreen : blurGreen}
             onFocus={() => setIsFocusedName(true)}
             onBlur={() => setIsFocusedName(false)}
             style={styles.textInput}
             value={userName}
             autoCapitalize="none"
-            placeholderTextColor={LIGHT_GRAY}
+            placeholderTextColor={lightGray}
             onChangeText={e => setUserName(e)}
           />
           <Text></Text>
           <TextInput
             placeholder="이메일"
-            selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedEmail ? FOCUS_GREEN : BLUR_GREEN}
+            selectionColor={focusGreen}
+            underlineColorAndroid={isFocusedEmail ? focusGreen : blurGreen}
             onFocus={() => setIsFocusedEmail(true)}
             onBlur={() => setIsFocusedEmail(false)}
             style={styles.textInput}
             value={email}
             autoCapitalize="none"
-            placeholderTextColor={LIGHT_GRAY}
+            placeholderTextColor={lightGray}
             onChangeText={e => setEmail(e)}
           />
           <Text></Text>
           <TextInput
             placeholder="비밀번호"
-            selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={isFocusedPW ? FOCUS_GREEN : BLUR_GREEN}
+            selectionColor={focusGreen}
+            underlineColorAndroid={isFocusedPW ? focusGreen : blurGreen}
             onFocus={() => setIsFocusedPW(true)}
             onBlur={() => setIsFocusedPW(false)}
             style={styles.textInput}
             value={password}
             autoCapitalize="none"
-            secureTextEntry={true}
-            placeholderTextColor={LIGHT_GRAY}
+            // secureTextEntry={true}
+            placeholderTextColor={lightGray}
             onChangeText={e => setPassword(e)}
           />
           {password && confirmPassword && password !== confirmPassword ? (
@@ -122,23 +125,28 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           )}
           <TextInput
             placeholder="비밀번호 확인"
-            selectionColor={FOCUS_GREEN}
-            underlineColorAndroid={
-              isFocusedConfirmPW ? FOCUS_GREEN : BLUR_GREEN
-            }
+            selectionColor={focusGreen}
+            underlineColorAndroid={isFocusedConfirmPW ? focusGreen : blurGreen}
             onFocus={() => setIsFocusedConfirmPW(true)}
             onBlur={() => setIsFocusedConfirmPW(false)}
             style={styles.textInput}
             value={confirmPassword}
             autoCapitalize="none"
             secureTextEntry={true}
-            placeholderTextColor={LIGHT_GRAY}
+            placeholderTextColor={lightGray}
             onChangeText={e => setConfirmPassword(e)}
           />
 
           <View style={styles.buttonBox}>
             <Button
-              buttonStyle={{ backgroundColor: FOCUS_GREEN }}
+              buttonStyle={{
+                backgroundColor: focusGreen,
+                fontFamily: 'BMDOHYEON'
+              }}
+              titleStyle={{
+                fontFamily: 'BMDOHYEON',
+                fontSize: 14
+              }}
               title="완료"
               onPress={handleOnClickSignup}
             />
@@ -163,7 +171,8 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 10,
     paddingHorizontal: 16,
-    fontSize: 16,
+    fontSize: 15,
+    fontFamily: 'BMDOHYEON',
     marginVertical: 10
   },
   error: {
