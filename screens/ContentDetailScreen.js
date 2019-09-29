@@ -7,8 +7,10 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
-import { Image, Rating } from 'react-native-elements';
+import { Image, Rating, Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+import logoIcon from '../assets/images/logo.png';
+import Colors from '../constants/Colors';
 /* TabView */
 import { TabView, TabBar } from 'react-native-tab-view';
 import LocInfo from './LocInfo';
@@ -19,9 +21,7 @@ import { firebaseApp, ContextSet } from '../firebase';
 /* Image */
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-const BLACK = '#000';
-const GREEN = '#7dcaac';
-const LIGHT_GRAY = '#D3D3D3';
+const { white, black, focusGreen, lightGray } = Colors;
 
 const width = Dimensions.get('window').width;
 
@@ -80,13 +80,13 @@ export default function ContentDetailScreen({
       {...props}
       style={{ backgroundColor: 'white' }}
       indicatorStyle={{
-        backgroundColor: GREEN,
+        backgroundColor: focusGreen,
         height: 3,
         borderRadius: 30
       }}
       tabStyle={styles.bubble}
       renderLabel={({ route, focused }) => {
-        const color = focused ? BLACK : LIGHT_GRAY;
+        const color = focused ? black : lightGray;
         return <Text style={{ color, margin: 8 }}>{route.title}</Text>;
       }}
     />
@@ -150,36 +150,24 @@ export default function ContentDetailScreen({
         start={{ x: 0, y: 0.5 }}
         end={{ x: 1, y: 0.5 }}
         colors={['#62cdaa', '#79d19b', '#90d392']}
-        style={styles.picBox}
+        style={{ flex: 1 }}
       >
-        <View
-          style={{
-            flex: 1,
-            paddingLeft: 30,
-            paddingRight: 30
-          }}
-        >
-          <View
-            style={{
-              flex: 2,
-              justifyContent: 'flex-end',
-              marginBottom: 0,
-              paddingBottom: 0
-            }}
-          >
-            <TouchableHighlight
-              onPress={() => {
-                if (isHome) setIsHomeDetail(false);
-                setIsDetail(false);
-              }}
-              underlayColor="white"
-            >
-              <MaterialIcons
-                color="white"
-                size={40}
-                name="keyboard-backspace"
-              ></MaterialIcons>
-            </TouchableHighlight>
+        <View style={styles.picBox}>
+          <View style={styles.header}>
+            <View style={styles.left}>
+              <Icon
+                name="arrow-back"
+                size={30}
+                color={white}
+                onPress={() => {
+                  if (isHome) setIsHomeDetail(false);
+                  setIsDetail(false);
+                }}
+                style={{ paddingRight: 120 }}
+              />
+            </View>
+            <Image source={logoIcon} style={{ width: 70, height: 70 }} />
+            <View style={styles.right}></View>
           </View>
           <View
             style={{
@@ -236,7 +224,28 @@ const styles = StyleSheet.create({
     flex: 1
   },
   picBox: {
-    flex: 1
+    flex: 1,
+    paddingLeft: 30,
+    paddingRight: 30
+  },
+  header: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 0,
+    paddingBottom: 0
+  },
+  left: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  right: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   },
   infoBox: {
     flex: 1
@@ -245,7 +254,7 @@ const styles = StyleSheet.create({
     paddingTop: 30
   },
   label: {
-    color: 'black'
+    color: black
   }
 });
 

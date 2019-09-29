@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 
 import { firebaseApp } from '../firebase';
 
-const { lightGray, focusGreen, blurGreen } = Colors;
+const { white, lightGray, focusGreen, blurGreen } = Colors;
 
 const SignupScreen = ({ setSignupPage, setData }) => {
   const [auth, users] = firebaseApp();
@@ -61,14 +61,14 @@ const SignupScreen = ({ setSignupPage, setData }) => {
         leftComponent={
           <Icon
             name="arrow-back"
-            color="#fff"
+            color={white}
             onPress={() => setSignupPage(false)}
             underlayColor={focusGreen}
           />
         }
         centerComponent={{
           text: '회원가입',
-          style: { color: '#fff', fontSize: 17, fontFamily: 'BMDOHYEON' }
+          style: { color: { white }, fontSize: 17, fontFamily: 'BMDOHYEON' }
         }}
         ViewComponent={LinearGradient}
         linearGradientProps={{
