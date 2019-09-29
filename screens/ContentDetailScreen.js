@@ -35,6 +35,7 @@ export default function ContentDetailScreen({
   const [commentList, setCommentList] = useState(undefined);
   const [reLoad, setReLoad] = useState(false);
   const contentTitle = useRef('');
+  const rating = useRef('');
   /* TabView */
   const [index, setIndex] = useState(0);
   const [routes, setRoutes] = useState([
@@ -58,6 +59,7 @@ export default function ContentDetailScreen({
         <LocComment
           type="inactive"
           comment={comment}
+          rating={rating}
           setComment={setComment}
           handleOnComment={handleOnComment}
           commentList={commentList}
@@ -85,7 +87,7 @@ export default function ContentDetailScreen({
 
   // 댓글을 입력할 때 실행
   const handleOnComment = () => {
-    const com = { id: JSON.stringify(data.userName), comment };
+    const com = { id: data.userName, comment, rating: rating.current };
     contents.doc(detailInfo).update({
       comments: firebase.firestore.FieldValue.arrayUnion(com)
     });
@@ -105,7 +107,7 @@ export default function ContentDetailScreen({
             .map((info, idx) => {
               return (
                 <View key={idx}>
-                  <Rating imageSize={20} readonly startingValue={4} />
+                  <Rating imageSize={20} readonly startingValue={info.rating} />
                   <Text>{info.id}</Text>
                   <Text>{info.comment}</Text>
                 </View>
