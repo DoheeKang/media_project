@@ -3,6 +3,7 @@ import { StyleSheet, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import logoIcon from '../assets/images/logo.png';
+import mainIcon from '../assets/images/mainIcon.png';
 
 export default function Loading() {
   return (
@@ -12,7 +13,8 @@ export default function Loading() {
       colors={['#62cdaa', '#79d19b', '#90d392']}
       style={styles.container}
     >
-      <Image source={logoIcon} style={{ width: 100, height: 100 }} />
+      <Image source={mainIcon} style={{ width: 80, height: 80 }} />
+      <Image source={logoIcon} style={{ width: 90, height: 90 }} />
     </LinearGradient>
   );
 }
