@@ -46,6 +46,7 @@ export default function ContentDetailScreen({
   const contentTitle = useRef('');
   const rating = useRef(0);
   const count = useRef(0);
+  const uri = useRef('');
   const bookIdx = useRef(0);
   const commentRating = useRef('');
   /* TabView */
@@ -164,6 +165,7 @@ export default function ContentDetailScreen({
       .doc(detailInfo)
       .get()
       .then(doc => {
+        uri.current = doc.data().url;
         rating.current = doc.data().rating;
         count.current = doc.data().count;
         setcontentInfo({
@@ -250,8 +252,7 @@ export default function ContentDetailScreen({
             <Text style={styles.title}>{contentTitle.current}</Text>
             <Image
               source={{
-                uri:
-                  'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fcat.jpg?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
+                uri: uri.current
               }}
               containerStyle={{ borderRadius: 45, overflow: 'hidden' }}
               style={{ width: width - 60, height: 170 }}
