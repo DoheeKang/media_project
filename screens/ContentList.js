@@ -42,7 +42,7 @@ export default function ContentScreen({
               underlayColor="white"
               key={info.id}
             >
-              <Content key={info.id} data={info.data}></Content>
+              <Content key={info.id} id={info.id} data={info.data}></Content>
             </TouchableHighlight>
           ))
         );

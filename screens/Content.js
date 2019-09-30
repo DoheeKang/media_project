@@ -11,8 +11,7 @@ export default function Content({ data }) {
       <Card
         containerStyle={styles.content}
         image={{
-          uri:
-            'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fcat.jpg?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
+          uri: data.url
         }}
       >
         <View>

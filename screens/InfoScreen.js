@@ -60,19 +60,21 @@ export default function InfoScreen(props) {
     } else {
       const tempLikeList = data['likes'];
       const t = [];
-      tempLikeList.forEach(element => {
-        contents
-          .doc(element)
-          .get()
-          .then(doc => {
-            t.push(<Content data={doc.data()}></Content>);
-          })
-          .then(() => {
-            if (t.length === tempLikeList.length) {
-              setLikeList(t);
-            }
-          });
-      });
+      if (tempLikeList.length) {
+        tempLikeList.forEach(element => {
+          contents
+            .doc(element)
+            .get()
+            .then(doc => {
+              t.push(<Content data={doc.data()}></Content>);
+            })
+            .then(() => {
+              if (t.length === tempLikeList.length) {
+                setLikeList(t);
+              }
+            });
+        });
+      }
     }
   }, [data]);
   return data ? (

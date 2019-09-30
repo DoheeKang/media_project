@@ -14,7 +14,7 @@ import Colors from '../constants/Colors';
 
 import { firebaseApp } from '../firebase';
 
-const { white, lightGray, focusGreen, blurGreen } = Colors;
+const { white, lightGray, focusGreen, blurGreen, textColor } = Colors;
 
 const SignupScreen = ({ setSignupPage, setData }) => {
   const [auth, users] = firebaseApp();
@@ -35,7 +35,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
           .createUserWithEmailAndPassword(email, password)
           .then(auth => {
             const authData = auth.user;
-            const data = { email, userName, like: [] };
+            const data = { email, userName, likes: [] };
             users.doc(authData.uid).set(data);
             setData(data);
             setSignupPage(false);
@@ -68,7 +68,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
         }
         centerComponent={{
           text: '회원가입',
-          style: { color: { white }, fontSize: 17, fontFamily: 'BMDOHYEON' }
+          style: { color: textColor, fontSize: 17, fontFamily: 'BMDOHYEON' }
         }}
         ViewComponent={LinearGradient}
         linearGradientProps={{
@@ -114,7 +114,7 @@ const SignupScreen = ({ setSignupPage, setData }) => {
             style={styles.textInput}
             value={password}
             autoCapitalize="none"
-            // secureTextEntry={true}
+            secureTextEntry={true}
             placeholderTextColor={lightGray}
             onChangeText={e => setPassword(e)}
           />

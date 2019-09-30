@@ -234,7 +234,7 @@ export default function HomeScreen() {
                       style={{ width: 30, height: 30 }}
                     />
                     <Text style={styles.text}>
-                      서울 {Math.ceil(weather.main.temp - 273.15)}도
+                      서울 {Math.ceil(weather.main.temp - 273.15)}°
                     </Text>
                   </View>
                   <View style={styles.row}>
