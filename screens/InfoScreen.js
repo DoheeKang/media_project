@@ -5,10 +5,12 @@ import {
   Text,
   Dimensions,
   TouchableHighlight,
+  ScrollView,
   Alert,
   Image
 } from 'react-native';
 import Colors from '../constants/Colors';
+import Content from './Content';
 import logoIcon from '../assets/images/logo.png';
 import { Avatar, Divider, Card } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,7 +23,7 @@ const { textColor, gray, lightGray } = Colors;
 export default function InfoScreen(props) {
   const [auth, users, contents] = firebaseApp();
   const [data, setData] = useContext(ContextSet.DataContext);
-  const [likeList, setLikeList] = useState([]);
+  const [likeList, setLikeList] = useState(undefined);
 
   const checkLogout = () => {
     Alert.alert(
@@ -56,29 +58,23 @@ export default function InfoScreen(props) {
     if (!data) {
       props.navigation.navigate('Auth');
     } else {
-      const tempLikeList = data['like'];
-      setLikeList(
-        tempLikeList.map((li, idx) =>
-          contents
-            .doc(li)
-            .get()
-            .then(doc => {
-              return (
-                <Text>{doc.data().title}</Text>
-                // <Card
-                //   containerStyle={styles.content}
-                //   image={{
-                //     uri:
-                //       'https://firebasestorage.googleapis.com/v0/b/media-e6082.appspot.com/o/photos%2Fphoto%2Fcat.jpg?alt=media&token=accdd002-422b-4fe5-b505-4b642cc5b780'
-                //   }}
-                // ></Card>
-              );
-            })
-        )
-      );
+      const tempLikeList = data['likes'];
+      const t = [];
+      tempLikeList.forEach(element => {
+        contents
+          .doc(element)
+          .get()
+          .then(doc => {
+            t.push(<Content data={doc.data()}></Content>);
+          })
+          .then(() => {
+            if (t.length === tempLikeList.length) {
+              setLikeList(t);
+            }
+          });
+      });
     }
   }, [data]);
-
   return data ? (
     <View style={styles.container}>
       <LinearGradient
@@ -161,14 +157,23 @@ export default function InfoScreen(props) {
         <View style={{ width, height: 20, backgroundColor: gray }}></View>
 
         <View style={{ flex: 2 }}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingLeft: 10
+            }}
+          >
             <MaterialIcons size={30} name="bookmark"></MaterialIcons>
             <Text style={[styles.text, { textAlignVertical: 'center' }]}>
               즐겨찾기
             </Text>
           </View>
           <Divider style={{ height: 3, backgroundColor: gray }} />
-          <View style={{ flex: 5 }}></View>
+          <View style={{ flex: 5 }}>
+            <ScrollView>{likeList}</ScrollView>
+          </View>
         </View>
       </View>
     </View>
