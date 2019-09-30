@@ -119,6 +119,11 @@ export default function ContentDetailScreen({
       users.doc(user.uid).update({
         likes: firebase.firestore.FieldValue.arrayUnion(detailInfo)
       });
+    } else {
+      setIsBookMark(false);
+      users.doc(user.uid).update({
+        likes: firebase.firestore.FieldValue.arrayRemove(detailInfo)
+      });
     }
   };
 
